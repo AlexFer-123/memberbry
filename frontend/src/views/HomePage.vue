@@ -31,10 +31,10 @@
 
         <div>
           <button 
-            type="submit" 
+            @click="increment"
             class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            {{ dataApi }}
+            contador: {{ counter }}
           </button>
           
         </div>
@@ -50,24 +50,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 
-const dataApi = ref(false)
 
-async function api() {
-  try{
 
-    const response = await fetch('http://localhost:4567/')
-    const data = await response.json()
-     dataApi.value = data
-    console.log(dataApi.value)
-
-  } catch (e) {
-    console.log(e)
-  }
-
-}
-api()
 </script>
 
 <style>
