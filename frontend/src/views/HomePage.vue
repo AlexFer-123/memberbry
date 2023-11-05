@@ -55,7 +55,7 @@
     import { reactive } from 'vue';
 
     const user = reactive({
-      email: '',
+      email: 'wrong',
       password: '',
     })
 
