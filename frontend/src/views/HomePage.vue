@@ -1,6 +1,7 @@
 <template>
     <div>
     <NavBar :logged="false" />
+    <a @click="login" class="btn">as</a>
     <div class="container mx-auto home">
 
     <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -30,12 +31,12 @@
         </div>
 
         <div>
-              <button 
-                @click="login()"
-                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  {{ user }}
-              </button>
+            <button 
+              @click="login()"
+              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {{ user }}
+            </button>
           
           
         </div>
@@ -51,23 +52,21 @@
 </template>
 
 <script setup>
-    import http from '@/services/http.js'
+    //import http from '@/services/http.js'
+    import http from '@/services/http'
     import { reactive } from 'vue';
+    // import { useRouter } from 'vue-router';
+    
+    // const $router = useRouter()
 
     const user = reactive({
-      email: 'wrong',
+      email: '',
       password: '',
     })
 
     const login = async () => {
-      console.log(this.user.value)
-      try {
-        const {data} = await http.get('/')
-        console.log(data)
-        
-      } catch (error) {
-        console.log(error?.response?.data)
-      }
+      const response = await http.post('/auth/login', user).then(response => console.log(response))
+      console.log(response)
     }
 </script>
 

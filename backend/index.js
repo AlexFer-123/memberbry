@@ -3,9 +3,11 @@ const express  = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 
 const app = express()
 app.use(express.json());
+app.use(cors())
 
 //Models
 const User = require('./models/User')
@@ -38,7 +40,7 @@ function checkToken(req, res, next) {
 //Private Route 
 app.get('/users/:id', checkToken, async (req, res) => {
     const id = req.params.id
-
+    
     const user = await User.findById(id, '-password')
 
     if(!user) {
@@ -98,7 +100,7 @@ app.post('/auth/register', async(req, res) => {
 //login do usuário
 app.post('/auth/login', async (req, res) => {
     const {email, password} = req.body
-
+    console.log ('chega aqui')
     if(!email) {
         return res.status(400).json({error: "Email vazio"})
     }
