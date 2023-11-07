@@ -1,5 +1,5 @@
 <template>
-  <Disclosure as="nav" class="shadow-sm" v-slot="{ open }">
+  <Disclosure as="nav" class="shadow-sm sticky top-0 bg-white" v-slot="{ open }">
     <div class="mx-auto max-w-5xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -12,12 +12,14 @@
           </DisclosureButton>
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-          <div class="flex flex-shrink-0 items-center">
-            <span class="display text-blue-600 cursor-pointer">Memberbry</Span>
-          </div>
+          <RouterLink to="/" class="flex items-center">
+            <div class="flex flex-shrink-0 items-center">
+              <img src="../assets/logo.png" width="100">
+            </div>
+          </RouterLink>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-              <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-blue-600 hover:bg-blue-800 text-white' : 'text-blue-600 hover:bg-indigo-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+              <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'text-purple-600 hover:text-purple-800 text-white' : 'text-blue-600 hover:bg-indigo-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
             </div>
           </div>
         </div>
@@ -66,46 +68,19 @@
   </Disclosure>
 </template>
 
-<script>
+<script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { ref } from 'vue';
 
-export default {
-  data:() => ({
-    open: false,
-    navigation: [
-      {
-        name: 'Sobre nós',
-        current: true,
-        href: '/'
-      },
-      {
-        name: 'Blog',
-        current: false,
-        href: '/blog'
-      },
-      {
-        name: 'Preços',
-        current: false,
-        href: '/'
-      }
-    ],
-  }),
-  components:{
-    Disclosure, 
-    DisclosureButton, 
-    DisclosurePanel, 
-    Menu, MenuButton, 
-    MenuItem, 
-    MenuItems,
-    Bars3Icon, 
-    BellIcon, 
-    XMarkIcon
-  },
-  props: {
-    logged: Boolean,
-  },
-}
+const navigation = ref([
+  {
+    name: 'Cadastro',
+    current: false,
+    href: '/register'
+  }
+])
+
 </script>
 
 <style lang="scss" scoped>
