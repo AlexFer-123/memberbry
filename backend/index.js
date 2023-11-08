@@ -67,11 +67,10 @@ app.post('/auth/register', async(req, res) => {
         return res.status(400).json({error: "Email vazio"})
     }
 
-    // Verificar se as senhas coincidem
     if (password !== confirmPassword) {
         return res.status(400).json({ error: 'As senhas não coincidem' });
     }
-    // Criar um novo usuário
+
     const userExists = await User.findOne({email: email})
     
     if(userExists){
@@ -97,10 +96,9 @@ app.post('/auth/register', async(req, res) => {
 
 })
 
-//login do usuário
 app.post('/auth/login', async (req, res) => {
     const {email, password} = req.body
-    console.log ('chega aqui')
+
     if(!email) {
         return res.status(400).json({error: "Email vazio"})
     }
@@ -137,7 +135,6 @@ app.post('/auth/login', async (req, res) => {
 
 })
 
-//Credenciais
 const dbUser = process.env.DB_USER
 const dbPass = process.env.DB_PASS
 const dbUrl = `mongodb+srv://${dbUser}:${dbPass}@cluster0.spki4nd.mongodb.net/`

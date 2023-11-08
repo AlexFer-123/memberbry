@@ -21,7 +21,7 @@
           <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Senha</label>
             <div class="text-sm">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Esqueceu a senha?</a>
             </div>
           </div>
           <div class="mt-2">
@@ -49,31 +49,43 @@
 </template>
 
 <script setup>
-    //import http from '@/services/http.js'
-    import http from '@/services/http'
-    import { reactive } from 'vue';
-    
-    const auth = reactive({})
-    const user = reactive({
-      email: '',
-      password: '',
-    })
+//import http from '@/services/http.js'
+import http from '@/services/http'
+import { reactive } from 'vue';
+import { useAuthStore } from '@/store/main';
+import { router } from '@/router';
 
-    const login = async () => {
-      try {
-       auth.value = await http.post('/auth/login', user)
+const authStore = useAuthStore()
+const auth = reactive({})
+const user = reactive({
+  email: '',
+  password: '',
+})
 
-       if(auth.value?.data?.token) {
-        localStorage.setItem("authMembry", auth?.value.data?.token)
-        
-       }
-
-       
-       
-      } catch (err) {
-        console.error(err)
-      }
+const login = async () => {
+  try {
+    const userToken = await http.post('/auth/login', user)
+    console.log(userToken)
+    if(userToken.data?.token) {
+      localStorage.setItem('authMembry', userToken.data?.token)
     }
+
+    router.beforeEach((to, from, next) => {
+      if (to.matched.some(record => record.meta.requiresAuth)) {
+        const token = localStorage.getItem('authMembry');
+        if (token) {
+          authStore.setToken(auth.value.data.token)
+          next()
+        }
+      } else {
+        next('/')
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 </script>
 
 <style>
