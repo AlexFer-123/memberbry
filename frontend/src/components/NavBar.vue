@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="keyAddiction">
     <div v-if="logged">
 
       <Disclosure as="nav" class="shadow-sm sticky top-0 bg-white" v-slot="{ open }">
@@ -105,7 +105,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/main';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const navigation = ref([
   {
@@ -115,19 +115,31 @@ const navigation = ref([
   }
 ])
 
-const authStore = useAuthStore()
 const logged = ref(false)
+const authStore = useAuthStore()
+const isAuthenticated = ref(authStore.isAuthenticated);
+const keyAddiction = ref(0)
 
+authStore.value = useAuthStore()
+
+watch(
+  () => authStore.isAuthenticated,
+  (authenticated) => {
+    console.log(authenticated)
+    logged.value = true
+    keyAddiction.value += 1
+    isAuthenticated.value = authenticated;
+  }
+);
 
 onMounted(() => {
   const token = localStorage.getItem('authMembry')
-  authStore.setToken(token)
+  authStore.value.setToken(token)
 
-  if(authStore.isAuthenticated) {
-    logged.value = authStore.isAuthenticated
+  if(authStore.value.isAuthenticated) {
+    logged.value = authStore.value.isAuthenticated
   }  
 })
-
 </script>
 
 <style lang="scss" scoped>

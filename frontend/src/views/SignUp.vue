@@ -79,7 +79,7 @@ const newUser = ref({})
 const registerStatus = ref({})
 
 const register = async () => {
-  console.log(newUser.value)
+
   try {
     const registerUser = await http.post('/auth/register', newUser.value)
     if(registerUser.status === 201) {
