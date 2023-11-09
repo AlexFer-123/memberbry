@@ -50,11 +50,9 @@
 <script setup>
 import http from '@/services/http'
 import { reactive } from 'vue';
-import { useAuthStore } from '@/store/main';
-import { router } from '@/router';
+import { router } from '@/router/index';
+import { userAuthenticate } from '@/router/auth'
 
-const authStore = useAuthStore()
-const auth = reactive({})
 const user = reactive({
   email: '',
   password: '',
@@ -69,25 +67,10 @@ const login = async () => {
     }
 
     await userAuthenticate()
+    router.push('/dashboard')
   } catch (e) {
     console.log(e)
   }
-}
-
-const userAuthenticate = () => {
-  router.beforeEach((to, from, next) => {
-      if (to.matched.some(record => record.meta.requiresAuth)) {
-        const token = localStorage.getItem('authMembry');
-        console.log(auth)
-        if (token) {
-          authStore.setToken(auth.value.data.token)
-          next()
-        }
-      } else {
-        next('/')
-      }
-    })
-
 }
 
 </script>

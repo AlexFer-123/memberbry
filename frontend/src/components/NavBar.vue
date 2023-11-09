@@ -71,7 +71,8 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { ref } from 'vue';
+import { useAuthStore } from '@/store/main';
+import { onMounted, ref } from 'vue';
 
 const navigation = ref([
   {
@@ -81,6 +82,18 @@ const navigation = ref([
   }
 ])
 
+const authStore = useAuthStore()
+const logged = ref(false)
+
+
+onMounted(() => {
+  const token = localStorage.getItem('authMembry')
+  authStore.setToken(token)
+
+  if(authStore.isAuthenticated) {
+    logged.value = authStore.isAuthenticated
+  }  
+})
 
 </script>
 

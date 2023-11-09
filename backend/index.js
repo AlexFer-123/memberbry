@@ -3,6 +3,8 @@ const express  = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const multer = require('multer');
+const path = require('path');
 const cors = require('cors')
 
 const app = express()
@@ -11,6 +13,17 @@ app.use(cors())
 
 //Models
 const User = require('./models/User')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage })
 
 //Open Route - Public Route
 app.get('/', (req, res) => {
@@ -53,7 +66,7 @@ app.get('/users/:id', checkToken, async (req, res) => {
 
 //Registro de usuário
 app.post('/auth/register', async(req, res) => {
-    const { name,  surname, email, password, confirmPassword,created } = req.body
+    const { name,  surname, email, password, confirmPassword, imgProfile, imgBanner } = req.body
 
     if(!name) {
         return res.status(400).json({error: "Nome vazio"})
@@ -86,8 +99,12 @@ app.post('/auth/register', async(req, res) => {
 
     const newUser = new User({
         name,
+        surname,
         email,
         password: passwordHash,
+        created: new Date().getTime(),
+        profile_image: imgProfile,
+        banner_image: imgBanner
     });
 
     try {
