@@ -53,10 +53,14 @@ app.get('/users/:id', checkToken, async (req, res) => {
 
 //Registro de usuário
 app.post('/auth/register', async(req, res) => {
-    const { name, email, password, confirmPassword } = req.body
+    const { name,  surname, email, password, confirmPassword,created } = req.body
 
     if(!name) {
         return res.status(400).json({error: "Nome vazio"})
+    }
+
+    if(!surname) {
+        return res.status(400).json({error: "Sobrenome vazio"})
     }
     
     if(!email) {
@@ -64,7 +68,7 @@ app.post('/auth/register', async(req, res) => {
     }
     
     if(!password) {
-        return res.status(400).json({error: "Email vazio"})
+        return res.status(400).json({error: "Senha vazia"})
     }
 
     if (password !== confirmPassword) {

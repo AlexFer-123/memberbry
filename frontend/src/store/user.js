@@ -13,7 +13,6 @@ export const useUserInfosStore = defineStore('useUserInfosStore',{
             this.name = user.name
         }
     }
-
-  }); 
+}); 
   
   

@@ -26,6 +26,7 @@ const getUserApi = async (token) => {
   user.value = user.value.data.user
 }
 
+
 onMounted(() => {
   const token = localStorage.getItem('authMembry') 
   console.log(token)
