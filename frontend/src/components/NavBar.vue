@@ -3,19 +3,20 @@
     <div v-if="logged">
 
       <Disclosure as="nav" class="shadow-sm sticky top-0 bg-white" v-slot="{ open }">
-        <div class="mx-auto max-w-5xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-12xl px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
-            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            
+            <div class="absolute inset-y-0 left-0 flex items-center z-50">
               <!-- Mobile menu button-->
-              <DisclosureButton class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <DisclosureButton :class="!open ? 'left-0 ' : ' ' + 'relative inline-flex items-center justify-center absolute top-0 left-48 ease-in-out duration-150 bg-white rounded-full shadow-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'">
                 <span class="absolute -inset-0.5" />
                 <span class="sr-only">Open main menu</span>
-                <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+                <ChevronRightIcon v-if="!open" class="block h-6 w-6 rounded-full" aria-hidden="true" />
+                <ChevronLeftIcon v-else class="flex h-6 w-6 rounded-full" aria-hidden="true" />
               </DisclosureButton>
             </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <RouterLink to="/" class="flex items-center">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-center">
+              <RouterLink :to="logged ?  '/dashboard' : '/'" class="flex items-center">
                 <div class="flex flex-shrink-0 items-center">
                   <img src="../assets/logo.png" width="100">
                 </div>
@@ -57,7 +58,13 @@
             </div>
           </div>
         </div>
+        <div :class=" !open ? 'hidden opacity-0' : 'flex opacity-100' + 'hidden sm:ml-6 sm:block ease-in duration-150'">
+        <div class="flex space-x-4">
+          <SideBar :title="router.currentRoute.value.name" :navigation="navigation"/>
+        </div>
+      </div>
       </Disclosure>
+
 
     </div>
 
@@ -103,9 +110,11 @@
 
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { ChevronRightIcon, BellIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/main';
 import { onMounted, ref, watch } from 'vue';
+import SideBar from './SideBar.vue';
+import { router } from '@/router';
 
 const navigation = ref([
   {
@@ -115,6 +124,10 @@ const navigation = ref([
   }
 ])
 
+console.log(router.currentRoute.value.name)
+
+
+const open = ref(true)
 const logged = ref(false)
 const authStore = useAuthStore()
 const isAuthenticated = ref(authStore.isAuthenticated);
@@ -125,7 +138,6 @@ authStore.value = useAuthStore()
 watch(
   () => authStore.isAuthenticated,
   (authenticated) => {
-    console.log(authenticated)
     logged.value = true
     keyAddiction.value += 1
     isAuthenticated.value = authenticated;

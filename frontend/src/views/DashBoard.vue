@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-5xl px-2 sm:px-6 lg:px-8">
     <h1 class="capitalize text-center my-6 text-lg font-semibold">Seja bem vindo, <span class="capitalize text-bold text-purple-600">{{ user.name }}</span></h1>  
     <span class="mt-10">
-      {{ apiFrete }}
+
     </span>
   </div>
 </template>

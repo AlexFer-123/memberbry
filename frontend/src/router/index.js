@@ -19,7 +19,7 @@ export const router = createRouter({
     {
       path: '/dashboard',
       component: DashboardAdmin,
-      name: 'DashboardAdmin',
+      name: 'Dashboard',
       meta: {
         requiresAuth: true
       }
