@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/HomePage.vue'
-import DashboardAdmin from '../views/DashBoard.vue'
+import Home from '@/views/HomePage.vue'
+import DashboardAdmin from '@/views/DashBoard.vue'
+import ConfigsAdmin from '@/views/ConfigsPage.vue'
 import Signup from '@/views/SignUp.vue'
 
 export const router = createRouter({
@@ -20,6 +21,14 @@ export const router = createRouter({
       path: '/dashboard',
       component: DashboardAdmin,
       name: 'Dashboard',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/configs',
+      component: ConfigsAdmin,
+      name: 'Configurações',
       meta: {
         requiresAuth: true
       }

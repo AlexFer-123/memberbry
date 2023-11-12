@@ -1,23 +1,25 @@
 <template>
   <div :key="keyAddiction">
     <div v-if="logged">
-
       <Disclosure as="nav" class="shadow-sm sticky top-0 bg-white" v-slot="{ open }">
-        <div class="mx-auto max-w-12xl px-2 sm:px-6 lg:px-8">
-          <div class="relative flex h-16 items-center justify-between">
+        <div class="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
             
+            <div :class=" !open ? 'hidden opacity-0' : 'flex opacity-100' + 'hidden sm:ml-0 sm:block ease-in duration-150 absolute left-0 top-0'">
+              <div class="flex space-x-4">
+                <SideBar :title="router.currentRoute.value.name" :navigation="navigation" :logged="logged"/>
+              </div>
+            </div>
             <div class="absolute inset-y-0 left-0 flex items-center z-50">
               <!-- Mobile menu button-->
-              <DisclosureButton :class="!open ? 'left-0 ' : ' ' + 'relative inline-flex items-center justify-center absolute top-0 left-48 ease-in-out duration-150 bg-white rounded-full shadow-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'">
-                <span class="absolute -inset-0.5" />
-                <span class="sr-only">Open main menu</span>
-                <ChevronRightIcon v-if="!open" class="block h-6 w-6 rounded-full" aria-hidden="true" />
-                <ChevronLeftIcon v-else class="flex h-6 w-6 rounded-full" aria-hidden="true" />
+              <DisclosureButton :class="!open ? 'left-10 ' : ' ' + 'relative inline-flex items-center justify-center absolute top-0 left-56 ease-in-out duration-150 bg-white rounded-full text-gray-400 hover:bg-gray-700 hover:text-white '">
+                <ChevronRightIcon v-if="!open" class="flex ml-4 h-10 w-10 rounded-full shadow-md p-2" aria-hidden="true" />
+                <ChevronLeftIcon v-else class="flex h-10 w-10 rounded-full shadow-md p-2" aria-hidden="true" />
               </DisclosureButton>
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-center">
-              <RouterLink :to="logged ?  '/dashboard' : '/'" class="flex items-center">
-                <div class="flex flex-shrink-0 items-center">
+              <RouterLink :to="logged ?  '/dashboard' : '/'" class="flex items-center justify-center">
+                <div class="flex items-center mx-auto justify-center translate-x-1/2 absolute ">
                   <img src="../assets/logo.png" width="100">
                 </div>
               </RouterLink>
@@ -58,11 +60,7 @@
             </div>
           </div>
         </div>
-        <div :class=" !open ? 'hidden opacity-0' : 'flex opacity-100' + 'hidden sm:ml-6 sm:block ease-in duration-150'">
-        <div class="flex space-x-4">
-          <SideBar :title="router.currentRoute.value.name" :navigation="navigation"/>
-        </div>
-      </div>
+
       </Disclosure>
 
 
@@ -118,13 +116,23 @@ import { router } from '@/router';
 
 const navigation = ref([
   {
+    name: 'Vídeos',
+    current: router.currentRoute.value.href === '/dashboard',
+    href: '/dashboard',
+  },
+  {
+    name: 'Configurações',
+    current: router.currentRoute.value.href === '/configs',
+    href: '/configs'
+  },
+  {
     name: 'Cadastro',
     current: false,
     href: '/register'
-  }
+  },
 ])
 
-console.log(router.currentRoute.value.name)
+console.log(navigation.value)
 
 
 const open = ref(true)
@@ -136,7 +144,7 @@ const keyAddiction = ref(0)
 authStore.value = useAuthStore()
 
 watch(
-  () => authStore.isAuthenticated,
+  () => authStore.isAuthenticated ,
   (authenticated) => {
     logged.value = true
     keyAddiction.value += 1
