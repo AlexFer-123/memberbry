@@ -88,7 +88,7 @@
               </RouterLink>
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
-                  <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'text-purple-600 hover:text-purple-800 text-white' : 'text-blue-600 hover:bg-indigo-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                  <RouterLink v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'text-purple-600 hover:text-purple-800 text-white' : 'text-blue-600 hover:bg-indigo-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</RouterLink>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ const navigation = ref([
   },
   {
     name: 'Cadastro',
-    current: false,
+    current: router.currentRoute.value.href === '/configs',
     href: '/register'
   },
 ])
