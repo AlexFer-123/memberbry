@@ -32,11 +32,14 @@ const getUserApi = async (token) => {
   authStore.setUser(user.value)
 }
 
+const tokenAuthPanda = router.query.code
+console.log(tokenAuthPanda)
 
 
 onMounted(() => {
   const token = localStorage.getItem('authMembry') 
-  console.log(token)
+
+
   if(!token) {
     router.push('/')
   } else {

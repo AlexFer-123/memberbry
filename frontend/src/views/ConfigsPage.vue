@@ -41,7 +41,7 @@ const oAuthInfos = ref(
   {
     client_id: "1gojsiuasqum4srpcqu0c036gr",
     scope: "aws.cognito.signin.user.admin",
-    redirect_uri: "https://membry.netlify.app/dashboard"
+    redirect_uri: "https://membry.netlify.app/configs"
   }
 )
 const authLink = ref(false)
