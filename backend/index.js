@@ -3,6 +3,8 @@ const express  = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const querystring = require("querystring");
+const axios = require("axios");
 const cors = require('cors')
 
 const app = express()
@@ -107,6 +109,7 @@ app.put('/users/:id/token', checkToken, async (req,res) => {
 
     const { integrationName, tokenIntegration } = req.body 
 
+
     if(!integrationName) {
         return res.status(400).json({msg: "Sem nome da integração"})
     }
@@ -128,7 +131,6 @@ app.put('/users/:id/token', checkToken, async (req,res) => {
         return res.status(200).json({msg: 'Usuário atualizado'})
 
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
 })

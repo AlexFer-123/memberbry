@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { router } from "@/router";
 
 const integrations = ref([
@@ -37,9 +37,6 @@ const integrations = ref([
     name: 'Panda Video'
   }
 ])
-const tokenAuthPanda = router.query.code
-console.log(tokenAuthPanda)
-
 const oAuthInfos = ref(
   {
     client_id: "1gojsiuasqum4srpcqu0c036gr",
@@ -47,13 +44,18 @@ const oAuthInfos = ref(
     redirect_uri: "https://membry.netlify.app/configs"
   }
 )
+
+const tokenAuthPanda = ref(false)
 const authLink = ref(false)
 
 const auth2Panda = () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
 }
 
-
+onMounted(() => {
+  tokenAuthPanda.value = router.currentRoute.value.query
+  
+})
 
 </script>
 
