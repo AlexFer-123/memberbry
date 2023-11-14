@@ -41,14 +41,13 @@ const oAuthInfos = ref(
   {
     client_id: "1gojsiuasqum4srpcqu0c036gr",
     scope: "aws.cognito.signin.user.admin",
-    redirect_uri: "https://gentle-cassata-e4f102.netlify.app/"
+    redirect_uri: "https://gentle-cassata-e4f102.netlify.app"
   }
 )
 const authLink = ref(false)
 
 const auth2Panda = () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
-
 }
 
 </script>
