@@ -53,22 +53,18 @@ const auth2Panda = () => {
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .font-title {
-    font: {
-      size: 2rem;
-      weight: 600;
-    }
+    font-size: 2rem;
+    font-weight: 600;
   }
 
   .card { 
     padding: 1.5rem;
-    @apply bg-slate-200 mr-1;
-    
-    .subtitle {
-      font: {
-        size: 1.2rem
-      };
-    }
+  }
+  .subtitle {
+
+    font-size: 1.2rem
+
   }
 </style>

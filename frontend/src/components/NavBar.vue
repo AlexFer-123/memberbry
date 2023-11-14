@@ -162,8 +162,5 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-    .brand {
-        @apply text-blue-600;
-    }
+<style scoped>
 </style>

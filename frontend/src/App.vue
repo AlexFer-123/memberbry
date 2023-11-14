@@ -9,10 +9,9 @@
 import NavBar from './components/NavBar.vue';
 </script>
 
-<style lang="scss">
-#app {
-  .home {
-    height: 80vh;
-  }
+<style>
+
+.home {
+  height: 80vh;
 }
 </style>

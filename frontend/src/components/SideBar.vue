@@ -29,18 +29,15 @@ const props = defineProps(['title', 'navigation', 'logged'])
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
     .sidebar {
         height: 100vh;
         padding: 1.7rem 0;
         width: 250px;
-        background-color: white;
-
-        
-        .content-title {
-            font-size: 1.5rem;
-            font-family: var(--font-montserrat);
-            @apply text-gray-700
-        }
+        background-color: white;       
+    }
+    .content-title {
+        font-size: 1.5rem;
+        font-family: var(--font-montserrat);
     }
 </style>
