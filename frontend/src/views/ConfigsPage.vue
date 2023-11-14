@@ -41,7 +41,7 @@ const oAuthInfos = ref(
   {
     client_id: "1gojsiuasqum4srpcqu0c036gr",
     scope: "aws.cognito.signin.user.admin",
-    redirect_uri: "http://localhost:8080/configs"
+    redirect_uri: "https://65539fc1321e2b0008df6e5d--gentle-cassata-e4f102.netlify.app/configs"
   }
 )
 const authLink = ref(false)

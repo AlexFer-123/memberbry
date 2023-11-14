@@ -145,13 +145,14 @@ app.post('/auth/login', async (req, res) => {
     }
 
     const user = await User.findOne({email: email})
-    
+
     //usuário existe?
     if(!user){
         return res.status(400).json({error: "Usuário não encontrado"})
     }
-
+    
     const checkPassword = await bcrypt.compare(password, user.password)
+    console.log(checkPassword)
 
     if(!checkPassword) {
         return res.status(400).json({error: "Senha invalida"})
