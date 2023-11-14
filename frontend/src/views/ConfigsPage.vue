@@ -36,6 +36,8 @@ const integrations = ref([
     name: 'Panda Video'
   }
 ])
+const tokenAuthPanda = router.query.code
+console.log(tokenAuthPanda)
 
 const oAuthInfos = ref(
   {
@@ -49,6 +51,8 @@ const authLink = ref(false)
 const auth2Panda = () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
 }
+
+
 
 </script>
 
