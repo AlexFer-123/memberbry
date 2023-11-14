@@ -82,6 +82,7 @@ const login = async () => {
 
   try {
     const userToken = await http.post('/auth/login', user)
+    
     if(userToken.data?.token) {
       localStorage.setItem('authMembry', userToken.data?.token)
     }

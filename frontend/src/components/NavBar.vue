@@ -80,34 +80,24 @@
                 <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
               </DisclosureButton>
             </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-center">
               <RouterLink to="/" class="flex items-center">
                 <div class="flex flex-shrink-0 items-center">
                   <img src="../assets/logo.png" width="100">
                 </div>
               </RouterLink>
-              <div class="hidden sm:ml-6 sm:block">
-                <div class="flex space-x-4">
-                  <RouterLink v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'text-purple-600 hover:text-purple-800 text-white' : 'text-blue-600 hover:bg-indigo-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</RouterLink>
-                </div>
-              </div>
             </div>
             
           </div>
         </div>
 
-        <DisclosurePanel class="sm:hidden">
-          <div class="space-y-1 px-2 pb-3 pt-2">
-            <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href" :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
-          </div>
-        </DisclosurePanel>
       </Disclosure>
     </div>
   </div>
 </template>
 
 <script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { Disclosure, DisclosureButton, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { ChevronRightIcon, BellIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/main';
 import { onMounted, ref, watch } from 'vue';
@@ -127,7 +117,7 @@ const navigation = ref([
   },
   {
     name: 'Cadastro',
-    current: router.currentRoute.value.href === '/configs',
+    current: false,
     href: '/register'
   },
 ])
