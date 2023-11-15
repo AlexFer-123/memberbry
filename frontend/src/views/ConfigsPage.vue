@@ -31,6 +31,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { router } from "@/router";
+// import {http} from "@/services/http";
+import { useAuthStore } from '@/store/main';
 
 const integrations = ref([
   {
@@ -47,14 +49,20 @@ const oAuthInfos = ref(
 
 const tokenAuthPanda = ref(false)
 const authLink = ref(false)
+const authStore = useAuthStore()
 
-const auth2Panda = () => {
+const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
+
 }
 
-onMounted(() => {
+onMounted(async () => {
   tokenAuthPanda.value = router.currentRoute.value.query
-  
+  console.log(authStore)
+
+// if(tokenAuthPanda.value?.data) {
+//   tokenPandaApiKey = await http.put('/')
+// }
 })
 
 </script>

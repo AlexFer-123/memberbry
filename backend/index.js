@@ -3,7 +3,6 @@ const express  = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const querystring = require("querystring");
 const axios = require("axios");
 const cors = require('cors')
 
@@ -13,6 +12,7 @@ app.use(cors())
 
 //Models
 const User = require('./models/User')
+const { tokenOAuth2 } = require('./pandaApi')
 
 //Open Route - Public Route
 app.get('/', (req, res) => {
@@ -34,7 +34,7 @@ function checkToken(req, res, next) {
 
         next()
     } catch (error) {
-        res.status(400).json({ msg: "Token Invalido!"})
+        return res.status(400).json({ msg: "Token Invalido!"})
     }
 
 }
@@ -119,20 +119,13 @@ app.put('/users/:id/token', checkToken, async (req,res) => {
     }
 
     const id = req.params.id
-    
-    try {
+     
+        const resAuthPanda = await tokenOAuth2(tokenIntegration) 
 
-        const user = await User.findById(id, '-password')
-
-        user.integrations.push({name: integrationName, token: tokenIntegration})
+        user.integrations.push({name: integrationName, token: resAuthPanda})
 
         await user.save()
-
         return res.status(200).json({msg: 'Usuário atualizado'})
-
-    } catch (error) {
-        res.status(500).json({ error: 'Erro interno do servidor' });
-    }
 })
 
 app.post('/auth/login', async (req, res) => {
