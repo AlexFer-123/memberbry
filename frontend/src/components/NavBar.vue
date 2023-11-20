@@ -101,8 +101,10 @@ import { Disclosure, DisclosureButton, Menu, MenuButton, MenuItem, MenuItems } f
 import { ChevronRightIcon, BellIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/store/main';
 import { onMounted, ref, watch } from 'vue';
+import { router } from '@/router/index';
+import http from '@/services/http'
 import SideBar from './SideBar.vue';
-import { router } from '@/router';
+import jwtDecode from 'jwt-decode';
 
 const navigation = ref([
   {
@@ -117,21 +119,16 @@ const navigation = ref([
   },
   {
     name: 'Cadastro',
-    current: false,
     href: '/register'
   },
 ])
-
-console.log(navigation.value)
-
 
 const open = ref(true)
 const logged = ref(false)
 const authStore = useAuthStore()
 const isAuthenticated = ref(authStore.isAuthenticated);
 const keyAddiction = ref(0)
-
-authStore.value = useAuthStore()
+const user = ref({})
 
 watch(
   () => authStore.isAuthenticated ,
@@ -142,12 +139,28 @@ watch(
   }
 );
 
+const getUserApi = async (token) => {
+  const userId = jwtDecode(token)
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  
+  user.value = await http.get(`/users/${userId.id}`, config)
+  user.value = user.value.data.user
+
+  authStore.setToken(token)
+  authStore.setUser(user.value)
+  return user.value
+}
+
 onMounted(() => {
   const token = localStorage.getItem('authMembry')
-  authStore.value.setToken(token)
-
-  if(authStore.value.isAuthenticated) {
+  authStore.setToken(token)
+  if(authStore.isAuthenticated.value) {
     logged.value = authStore.value.isAuthenticated
+    getUserApi(token)
   }  
 })
 </script>

@@ -7,7 +7,7 @@
 
 <script setup>
 import NavBar from './components/NavBar.vue';
-import { router } from '@/router';
+// import { router } from '@/router';
 import { useAuthStore } from '@/store/main';
 import { onMounted, ref } from 'vue';
 import { jwtDecode } from "jwt-decode";
@@ -26,7 +26,7 @@ const getUserApi = async (token) => {
   
   user.value = await http.get(`/users/${userId.id}`, config)
   user.value = user.value.data.user
-
+  
   authStore.setToken(token)
   authStore.setUser(user.value)
 }
@@ -36,7 +36,7 @@ onMounted(() => {
 
 
   if(!token) {
-    router.push('/')
+    return
   } else {
     getUserApi(token)
   }
