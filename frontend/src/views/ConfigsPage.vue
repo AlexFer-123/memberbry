@@ -48,6 +48,7 @@ const oAuthInfos = ref(
   }
 )
 
+const authStoreGlobal = ref(false)
 const formData = ref({
   email: '',
   integrationName: '',
@@ -59,35 +60,46 @@ const authLink = ref(false)
 
 const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
-
 }
 
-onMounted(async () => {
-  tokenAuthPanda.value = router.currentRoute.value.query
-  const authStore = useAuthStore()
-  if(tokenAuthPanda.value?.code) {
-    formData.value = {
-      email: authStore.user.email,
-      integrationName: 'Panda',
-      tokenIntegration: tokenAuthPanda.value.code,
-    }
-    let token = localStorage.getItem('authMembry')
-    token = jwtDecode(token)
-    const userId = token.id
-
-    try {
-      const response = await http.put(`/users/${userId}/token`, formData.value,
+const createToken = async () => {
+  
+  setTimeout (
+    (async () => {
+      formData.value = {
+        email: authStoreGlobal.value.user.email,
+        integrationName: 'Panda',
+        tokenIntegration: tokenAuthPanda.value.code,
+      }
+      console.log(formData)
+      let token = localStorage.getItem('authMembry')
+      token = jwtDecode(token)
+      const userId = token.id
+      
+      try {
+    
+        const response = await http.put(`/users/${userId}/token`, formData.value,
         {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
-        }
-      ) 
-      authStore.setUser(response.data.user)
-    
-    } catch (error) {
-      console.error(error)
+            }
+            ) 
+            authStoreGlobal.value.setUser(response.data.user)
+            
+          } catch (error) {
+            console.error(error)
+          }
+            }), 2000 
+          )
     }
+    
+onMounted( () => {
+  tokenAuthPanda.value = router.currentRoute.value.query
+  const authStore = useAuthStore()
+  authStoreGlobal.value = authStore
+  if(tokenAuthPanda.value?.code) {
+    createToken()
   }
 })
 
