@@ -23,6 +23,7 @@ function checkToken(req, res, next) {
 
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
+    console.log(authHeader, token)
 
     if(!token) {
         return res.status(401).json({msg: "Acesso negado"})
@@ -105,9 +106,9 @@ app.post('/auth/register', async(req, res) => {
 
 })
 
-app.put('/users/:id/token', checkToken, async (req,res) => {
+app.put('/users/:id/token', async (req,res) => {
 
-    const { integrationName, tokenIntegration } = req.body 
+    const { integrationName, tokenIntegration, email } = req.body 
 
 
     if(!integrationName) {
@@ -119,13 +120,14 @@ app.put('/users/:id/token', checkToken, async (req,res) => {
     }
 
     const id = req.params.id
-     
+
+        const user = await User.findOne({email})
+        console.log(user)
         const resAuthPanda = await tokenOAuth2(tokenIntegration) 
 
-        user.integrations.push({name: integrationName, token: resAuthPanda})
-
+        user.integrations = ({name: integrationName, token: resAuthPanda})
         await user.save()
-        return res.status(200).json({msg: 'Usuário atualizado'})
+        return res.status(200).json({msg: 'Usuário atualizado', user})
 })
 
 app.post('/auth/login', async (req, res) => {

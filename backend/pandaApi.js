@@ -5,13 +5,12 @@ const querystring = require("querystring");
 const url = "https://auth.pandavideo.com.br"
 
 const tokenOAuth2 = async (token) => { 
+    console.log(token)
     const code = token; // this you'll find in the step-1.html archive.
     const client_id = process.env.CLIENT_ID_PANDA ;
     const client_secret = process.env.CLIENT_SECRET_PANDA;
     const redirect_uri = "https://membry.netlify.app/configs";
 
-    
-    try {
        const query = querystring.stringify({
            grant_type: "authorization_code",
            code: code,
@@ -31,14 +30,9 @@ const tokenOAuth2 = async (token) => {
        })
        
        const refresh_token = response.data.refresh_token; 
-       const token = response.data.access_token;
+       const tokenAcess = response.data.access_token;
 
-       return {refresh_token, token}
-
-    
-   } catch (er) {
-       console.log(er)
-   }
+       return {refresh_token, tokenAcess}
     
 }
 

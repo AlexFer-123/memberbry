@@ -9,12 +9,13 @@
 import NavBar from './components/NavBar.vue';
 // import { router } from '@/router';
 import { useAuthStore } from '@/store/main';
-import { onMounted, ref } from 'vue';
+import { watch, onMounted, ref } from 'vue';
 import { jwtDecode } from "jwt-decode";
 import http from '@/services/http'
 
 const authStore = useAuthStore()
 const user = ref(false)
+const isAuthenticated = ref(false)
 
 const getUserApi = async (token) => {
   const userId = jwtDecode(token)
@@ -30,6 +31,13 @@ const getUserApi = async (token) => {
   authStore.setToken(token)
   authStore.setUser(user.value)
 }
+
+watch(
+  () => authStore.isAuthenticated,
+  (authenticated) => {
+    isAuthenticated.value = authenticated
+  }
+);
 
 onMounted(() => {
   const token = localStorage.getItem('authMembry') 

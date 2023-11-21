@@ -10,10 +10,10 @@
       </div>
     </div>
 
-    <div class="integrations flex text-center flex-wrap">
+    <div class="integrations flex justify-center text-center flex-wrap">
       <div v-for="integration in integrations" :key="integration" class="">
         <div class="card w-64 flex-wrap flex-column gap-6 justify-center">
-          <div class="flex" >
+          <div class="flex justify-center mb-4" >
             <span class=" block subtitle font-medium">
               {{integration.name}}
             </span>
@@ -31,8 +31,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { router } from "@/router";
-// import {http} from "@/services/http";
 import { useAuthStore } from '@/store/main';
+import  http  from '@/services/http'
+import { jwtDecode } from "jwt-decode";
 
 const integrations = ref([
   {
@@ -47,9 +48,14 @@ const oAuthInfos = ref(
   }
 )
 
+const formData = ref({
+  email: '',
+  integrationName: '',
+  tokenIntegration: '',
+});
+
 const tokenAuthPanda = ref(false)
 const authLink = ref(false)
-const authStore = useAuthStore()
 
 const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
@@ -58,11 +64,31 @@ const auth2Panda = async () => {
 
 onMounted(async () => {
   tokenAuthPanda.value = router.currentRoute.value.query
-  console.log(authStore)
+  const authStore = useAuthStore()
+  if(tokenAuthPanda.value?.code) {
+    formData.value = {
+      email: authStore.user.email,
+      integrationName: 'Panda',
+      tokenIntegration: tokenAuthPanda.value.code,
+    }
+    let token = localStorage.getItem('authMembry')
+    token = jwtDecode(token)
+    const userId = token.id
 
-// if(tokenAuthPanda.value?.data) {
-//   tokenPandaApiKey = await http.put('/')
-// }
+    try {
+      const response = await http.put(`/users/${userId}/token`, formData.value,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` 
+          }
+        }
+      ) 
+      authStore.setUser(response.data.user)
+    
+    } catch (error) {
+      console.error(error)
+    }
+  }
 })
 
 </script>
