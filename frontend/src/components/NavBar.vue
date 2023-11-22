@@ -34,7 +34,7 @@
                 </button>
       
                 <!-- Profile dropdown -->
-                <Menu as="div" class="relative ml-3">
+                <Menu v-if="authStore?.user" as="div" class="relative ml-3">
                   <div>
                     <MenuButton class="relative flex rounded-full px-3 bg-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span class="absolute -inset-1.5" />
