@@ -41,8 +41,7 @@ watch(
 
 onMounted(() => {
   const token = localStorage.getItem('authMembry') 
-
-
+  
   if(!token) {
     return
   } else {
