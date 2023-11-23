@@ -18,7 +18,7 @@
               {{integration.name}}
             </span>
           </div>
-          <div v-if="authStoreGlobal.user">
+          <div v-if="authStoreGlobal.user?.integrations[0].token">
             <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
           </div>
           <div v-else>
