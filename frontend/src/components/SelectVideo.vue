@@ -31,7 +31,7 @@
   </template>
   
   <script setup>
-  import { onMounted, ref } from 'vue'
+  import { onMounted, ref, defineEmits, watch } from 'vue'
   import pandaApi from '@/services/pandaApi'
   import { useAuthStore } from '@/store/main'
   import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
@@ -41,12 +41,16 @@
   const selected = ref({})
   const authStore = useAuthStore()
   const accessToken = ref(null)
+  const emit = defineEmits(['video-selected'])
+
+  watch(() => selected.value, () => {
+    emit('video-selected', selected.value)
+  })
   
   onMounted(async () => {
     if (authStore.user.integrations[0].token) {
-      console.log(authStore.user)
       accessToken.value = await authStore.user.integrations[0].token.tokenAcess
-
+      
       if(accessToken.value != null) {
         try {
           const ret = await pandaApi.get('/videos',
@@ -57,7 +61,9 @@
           })
           
           videos.value = ret.data.videos
-          selected.value = videos.value[3]
+          selected.value = videos.value[0]
+          console.log(selected.value)
+          emit('video-selected', selected.value)
         } catch (error) {
           console.error(error)
         }
