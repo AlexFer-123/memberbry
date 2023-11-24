@@ -18,10 +18,7 @@
               {{integration.name}}
             </span>
           </div>
-          <div v-if="authStoreGlobal.user?.integrations[0].token">
-            <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
-          </div>
-          <div v-else>
+          <div>
             <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
           </div>
         
@@ -87,16 +84,16 @@ const createToken = async () => {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
-            }
-            ) 
-            authStoreGlobal.value.setUser(response.data.user)
-            
-          } catch (error) {
-            console.error(error)
-          }
-            }), 2000 
-          )
-    }
+        }
+        ) 
+        authStoreGlobal.value.setUser(response.data.user)
+        
+      } catch (error) {
+        console.error(error)
+      }
+    }), 2000 
+  )
+}
     
 onMounted( () => {
   tokenAuthPanda.value = router.currentRoute.value.query
