@@ -119,15 +119,13 @@ app.put('/users/:id/token', async (req,res) => {
         return res.status(401).json({msg: "Sem chave de acesso para o token"})
     }
 
-    const id = req.params.id
+    const user = await User.findOne({email})
+    console.log(user)
+    const resAuthPanda = await tokenOAuth2(tokenIntegration) 
 
-        const user = await User.findOne({email})
-        console.log(user)
-        const resAuthPanda = await tokenOAuth2(tokenIntegration) 
-
-        user.integrations = ({name: integrationName, token: resAuthPanda})
-        await user.save()
-        return res.status(200).json({msg: 'Usuário atualizado', user})
+    user.integrations = ({name: integrationName, token: resAuthPanda})
+    await user.save()
+    return res.status(200).json({msg: 'Usuário atualizado', user})
 })
 
 app.post('/auth/login', async (req, res) => {
@@ -167,6 +165,31 @@ app.post('/auth/login', async (req, res) => {
         res.status(500).json({msg: "Internal server error"})
     }
 
+})
+
+app.put('/users/:id/lessons', checkToken, async (req, res) => {
+    const { name,  description, video } = req.body
+
+    if(!name) {
+        return res.status(400).json({msg: "Precisa passar o nome da aula"})
+    }
+
+    if(!description) {
+        return res.status(400).json({msg: "Precisa passar a descrição da aula"})
+    }
+
+    if(!video) {
+        return res.status(400).json({msg: "Nenhum vídeo identificado"})
+    }
+
+    const id = req.params.id
+    const user = await User.findById(id)
+
+    console.log(user)
+    user.lessons = ({ name, description, video})
+    await user.save()
+    
+    return res.status(201).json({ msg: "Aula Criada"})
 })
 
 const dbUser = process.env.DB_USER

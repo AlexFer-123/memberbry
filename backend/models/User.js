@@ -6,7 +6,8 @@ const User = mongoose.model('User', {
     email: String,
     password: String,
     company: String,
-    integrations: [],
+    integrations: Array,
+    lessons: Array,
     created: Number
 })
 

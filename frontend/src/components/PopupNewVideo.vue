@@ -63,11 +63,15 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 const open = ref(false)
 const emit = defineEmits(['close-modal'])
 const selectedVideoInfos = ref({})
+// const lesson = ref({})
 
 const SelectedVideo = (video) => {
     selectedVideoInfos.value = video
 
 }
+
+// const createLesson = async () => {}
+
 
 const closeModal = () => {
     if(!open.value) {
