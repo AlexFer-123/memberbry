@@ -6,10 +6,13 @@
       <div class="my-10">
         <div class="flex justify-end">
           <button class="bg-blue-600 text-white py-2 px-6 rounded-md" @click="openModal(openModalNewVideo)">Adicionar nova aula</button>
-          <PopupNewVideo :show="openModalNewVideo" @close-modal="closeModalNewVideo"/>
+          <PopupNewVideo :show="openModalNewVideo" :user="user" @close-modal="closeModalNewVideo"/>
         </div>
       </div>
-      <listLessons />
+      <div v-if="user?.lessons.length > 0">
+        
+        <listLessons :lessons="user.lessons" />
+      </div>
     </div>
   </div>
 </template>
