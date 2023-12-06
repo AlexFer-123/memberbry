@@ -174,10 +174,6 @@ app.put('/users/:id/lessons', checkToken, async (req, res) => {
         return res.status(400).json({msg: "Precisa passar o nome da aula"})
     }
 
-    if(!description) {
-        return res.status(400).json({msg: "Precisa passar a descrição da aula"})
-    }
-
     if(!video) {
         return res.status(400).json({msg: "Nenhum vídeo identificado"})
     }
@@ -186,7 +182,7 @@ app.put('/users/:id/lessons', checkToken, async (req, res) => {
     const user = await User.findById(id)
 
     console.log(user)
-    user.lessons = ({ name, description, video})
+    user.lessons.push({ name, description, video})
     await user.save()
     
     return res.status(201).json({ msg: "Aula Criada"})
