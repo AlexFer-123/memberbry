@@ -18,7 +18,11 @@
               {{integration.name}}
             </span>
           </div>
-          <div>
+          
+          <div v-if="authStoreGlobal.user?.integrations[0].token">
+            <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
+          </div>
+          <div v-else>
             <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
           </div>
         
@@ -72,7 +76,7 @@ const createToken = async () => {
         integrationName: 'Panda',
         tokenIntegration: tokenAuthPanda.value.code,
       }
-      console.log(formData)
+
       let token = localStorage.getItem('authMembry')
       token = jwtDecode(token)
       const userId = token.id

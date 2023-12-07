@@ -36,7 +36,7 @@
                         <h2 class="text-2xl font-bold text-gray-900 sm:pr-12">{{ selectedVideoInfos.title }}</h2>
   
                         <div class="my-4">
-                            <button class="bg-blue-600 py-2 px-6 rounded-md text-white">Criar aula</button>
+                            <button @click="createLesson" class="bg-blue-600 py-2 px-6 rounded-md text-white">Criar aula</button>
                         </div>
                     </div>
                   </div>
@@ -50,8 +50,10 @@
   </template>
   
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, defineProps } from 'vue'
 import SelectVideo from './SelectVideo.vue';
+import { useAuthStore } from '@/store/main';
+import http from '@/services/http'
 import {
     Dialog,
     DialogPanel,
@@ -60,14 +62,34 @@ import {
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
+const authStore = useAuthStore()
 const open = ref(false)
 const emit = defineEmits(['close-modal'])
 const selectedVideoInfos = ref({})
+const props = defineProps(['user'])
 
 const SelectedVideo = (video) => {
     selectedVideoInfos.value = video
-
 }
+
+const createLesson = async () => {
+  console.log(selectedVideoInfos, props.user._id)
+  
+  const response = await http.put(`/users/${props.user._id}/lessons`, {
+      name: selectedVideoInfos.value.title,
+      description: selectedVideoInfos.value.description,
+      video: selectedVideoInfos.value
+    },
+    { 
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`
+        }
+    }
+  )
+
+  console.log(response)
+}
+
 
 const closeModal = () => {
     if(!open.value) {
