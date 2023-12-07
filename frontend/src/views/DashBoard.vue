@@ -10,7 +10,6 @@
         </div>
       </div>
       <div v-if="user?.lessons.length > 0">
-        
         <listLessons :lessons="user.lessons" />
       </div>
     </div>
