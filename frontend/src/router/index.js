@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/HomePage.vue'
 import DashboardAdmin from '@/views/DashBoard.vue'
+import LessonEdit from '@/views/LessonEdit.vue'
 import ConfigsAdmin from '@/views/ConfigsPage.vue'
 import Signup from '@/views/SignUp.vue'
 
@@ -21,6 +22,14 @@ export const router = createRouter({
       path: '/dashboard',
       component: DashboardAdmin,
       name: 'Dashboard',
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/lessons/:id',
+      component: LessonEdit,
+      name: 'LessonEdit',
       meta: {
         requiresAuth: true
       }
