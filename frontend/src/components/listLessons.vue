@@ -11,9 +11,11 @@
             </div>
           </div>
         </div>
-        <div class="w-12 flex align-center px-3.5 py-0.5 rounded-md cursor-pointer border-solid border-blue-800 border-2">
-          <PencilIcon class="text-blue-800" :size="24"/>
-        </div>
+        <RouterLink :to="'/lessons/' + lesson.video.id">
+          <div class="w-12 flex align-center px-3.5 py-0.5 rounded-md cursor-pointer border-solid border-blue-800 border-2">
+            <PencilIcon class="text-blue-800" :size="24"/>
+          </div>
+        </RouterLink>
       </li>
 
     </ul>
