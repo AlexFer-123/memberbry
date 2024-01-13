@@ -41,6 +41,9 @@
               </form>
               
             </div>
+            <div v-if="error" class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <div class="text-center">{{ error }}</div>
+            </div>
           </div>
         </div>
 
@@ -66,7 +69,7 @@
 
 <script setup>
 import http from '@/services/http'
-import { reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { router } from '@/router/index';
 import { userAuthenticate } from '@/router/auth'
 import { useAuthStore } from '@/store/main';
@@ -76,7 +79,13 @@ const user = reactive({
   password: '',
 })
 
+const error = ref(false)
 const logged = useAuthStore()
+
+onMounted( async () => {
+  error.value = await logged.error
+  console.log(logged.error)
+})
 
 const login = async () => {
 
@@ -90,7 +99,9 @@ const login = async () => {
     await userAuthenticate()
     router.push('/dashboard')
   } catch (e) {
-    console.log(e)
+    router.push('/')
+    error.value = e.response.data.error
+    logged.setError(error.value)
   }
 }
 
