@@ -58,7 +58,7 @@
             <div class="sm:mx-auto sm:w-full sm:max-w-sm text-center">
               <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Você já está logado</h2>
               <div class="mt-6">
-                <RouterLink to="/dashboard" class="bg-purple-600 py-2 px-4 my-6 text-white rounded-md">Ir para dashboard</RouterLink>
+                <RouterLink class="bg-purple-600 py-2 px-4 my-6 text-white rounded-md">Ir para dashboard</RouterLink>
               </div>
             </div>
           </div>
@@ -73,13 +73,17 @@
 import http from '@/services/http'
 import { ref, reactive, onMounted } from 'vue';
 import { router } from '@/router/index';
-import { userAuthenticate } from '@/router/auth'
 import { useAuthStore } from '@/store/main';
+import { jwtDecode } from "jwt-decode";
+
+const authStore = useAuthStore()
 
 const user = reactive({
   email: '',
   password: '',
 })
+
+const loggedInUser = ref(false)
 
 const error = ref(false)
 const logged = useAuthStore()
@@ -97,14 +101,31 @@ const login = async () => {
       localStorage.setItem('authMembry', userToken.data?.token)
     }
 
-    await userAuthenticate()
-    router.push('/dashboard')
-    logged.setError(null)
+    const authenticationToken = userToken.data.token
+    await getUserApi(authenticationToken)
+
+    console.log(loggedInUser.value)
+
   } catch (e) {
     router.push('/')
     error.value = e.response.data.error
     logged.setError(error.value)
   }
+}
+
+const getUserApi = async (token) => {
+  const userId = jwtDecode(token)
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  
+  loggedInUser.value = await http.get(`/users/${userId.id}`, config)
+  
+  authStore.setToken(token)
+  authStore.setUser(loggedInUser.value.data.user)
+  return loggedInUser.value.data.user
 }
 
 </script>

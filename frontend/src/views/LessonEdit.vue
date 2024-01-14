@@ -15,8 +15,21 @@
                         ></iframe>
                     </div>
     
-                    gostaria de adicionar autoplay no vídeo?
-                    <input v-model="videoConfigs.autoplay" type="checkbox">
+                    <div class="feat-player col-12 col-lg-6 my-4 d-flex">
+                        <h4 class="text-base text-purple-600">Autoplay</h4>
+                        <Switch
+                            v-model="videoConfigs.autoplay"
+                            :class="videoConfigs.autoplay ? 'bg-teal-900' : 'bg-teal-700'"
+                            class="relative inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+                            >
+                            <span class="sr-only">Use setting</span>
+                            <span
+                                aria-hidden="true"
+                                :class="videoConfigs.autoplay ? 'translate-x-5' : 'translate-x-0'"
+                                class="pointer-events-none inline-block h-[15px] w-[15px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+                            />
+                        </Switch>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,6 +53,7 @@
 <script setup>
     import { useAuthStore } from '@/store/main';
     import { ref, watch } from 'vue';
+    import { Switch } from '@headlessui/vue'
 
     const authStore = useAuthStore()
     const user = ref(authStore.user)
@@ -59,7 +73,7 @@
     watch(
         () => videoConfigs.value,
         (modifiedVideo) => {
-            console.log(modifiedVideo)
+            console.log(videoConfigs.value, modifiedVideo)
             keyVideo.value++
         }
     );
