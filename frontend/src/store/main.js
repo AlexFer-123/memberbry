@@ -4,6 +4,7 @@ export const useAuthStore = defineStore('useAuthStore', {
     state: () => ({
       token: null,
       user: null,
+      error: null,
     }),
     getters: {
       isAuthenticated: (state) => !!state.token,
@@ -16,7 +17,9 @@ export const useAuthStore = defineStore('useAuthStore', {
       setUser(user) {
         this.user = user;
       },
-  
+      setError(error) {
+        this.error = error
+      },
       clearAuthData() {
         this.token = null;
         this.user = null;

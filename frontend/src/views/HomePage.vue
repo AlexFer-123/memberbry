@@ -3,8 +3,13 @@
       <div v-if="!logged.isAuthenticated">
 
         <div class="container mx-auto home">
-
+          
           <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            
+            <div v-if="error" class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+               <div class="text-center bg-red-400 py-2 px-4 my-6 text-white rounded-md">{{ error }}</div>
+            </div>
+
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
               <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Faça login.</h2>
             </div>
@@ -66,7 +71,7 @@
 
 <script setup>
 import http from '@/services/http'
-import { reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { router } from '@/router/index';
 import { userAuthenticate } from '@/router/auth'
 import { useAuthStore } from '@/store/main';
@@ -76,7 +81,12 @@ const user = reactive({
   password: '',
 })
 
+const error = ref(false)
 const logged = useAuthStore()
+
+onMounted( async () => {
+  error.value = await logged.error
+})
 
 const login = async () => {
 
@@ -89,8 +99,11 @@ const login = async () => {
 
     await userAuthenticate()
     router.push('/dashboard')
+    logged.setError(null)
   } catch (e) {
-    console.log(e)
+    router.push('/')
+    error.value = e.response.data.error
+    logged.setError(error.value)
   }
 }
 
