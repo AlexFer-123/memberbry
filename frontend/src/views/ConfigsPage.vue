@@ -24,7 +24,7 @@
           </div>
           <div v-else>
             <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
-          </div>
+          </div> 
         
         </div>
       </div>
