@@ -19,11 +19,11 @@
             </span>
           </div>
           
-          <div v-if="authStoreGlobal.user?.integrations[0].token">
-            <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
+          <div v-if="authStoreGlobal.user?.integrations[0]?.token" >
+            <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
           </div>
           <div v-else>
-            <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
+            <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
           </div>
         
         </div>
@@ -67,7 +67,7 @@ const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
 }
 
-const createToken = async () => {
+const createToken = async (token) => {
   
   setTimeout (
     (async () => {
@@ -77,8 +77,8 @@ const createToken = async () => {
         tokenIntegration: tokenAuthPanda.value.code,
       }
 
-      let token = localStorage.getItem('authMembry')
       token = jwtDecode(token)
+      console.log(token)
       const userId = token.id
       
       try {
@@ -103,9 +103,8 @@ onMounted( () => {
   tokenAuthPanda.value = router.currentRoute.value.query
   const authStore = useAuthStore()
   authStoreGlobal.value = authStore
-  console.log(authStoreGlobal.value)
-  if(tokenAuthPanda.value?.code) {
-    createToken()
+  if(authStoreGlobal.value.token) {
+    createToken(authStoreGlobal.value.token )
   }
 })
 
