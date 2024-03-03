@@ -7,7 +7,6 @@
 
 <script setup>
 import NavBar from './components/NavBar.vue';
-// import { router } from '@/router';
 import { useAuthStore } from '@/store/main';
 import { watch, onMounted, ref } from 'vue';
 import { jwtDecode } from "jwt-decode";
