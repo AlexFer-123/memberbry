@@ -74,20 +74,25 @@ const SelectedVideo = (video) => {
 
 const createLesson = async () => {
   console.log(selectedVideoInfos, props.user._id)
-  
-  const response = await http.put(`/users/${props.user._id}/lessons`, {
-      name: selectedVideoInfos.value.title,
-      description: selectedVideoInfos.value.description,
-      video: selectedVideoInfos.value
-    },
-    { 
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`
-        }
-    }
-  )
 
-  console.log(response)
+  try {
+    
+    const response = await http.put(`/users/${props.user._id}/lessons`, {
+        name: selectedVideoInfos.value.title,
+        description: selectedVideoInfos.value.description,
+        video: selectedVideoInfos.value
+      },
+      { 
+          headers: {
+            'Authorization': `Bearer ${authStore.token}`
+          }
+      }
+    )
+  
+    console.log(response)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 
