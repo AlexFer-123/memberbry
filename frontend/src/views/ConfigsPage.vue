@@ -34,8 +34,8 @@
 import { ref, onMounted } from "vue";
 import { router } from "@/router";
 import { useAuthStore } from '@/store/main';
-import  http  from '@/services/http'
-import { jwtDecode } from "jwt-decode";
+// import  http  from '@/services/http'
+// import { jwtDecode } from "jwt-decode";
 
 const integrations = ref([
   {
@@ -51,11 +51,11 @@ const oAuthInfos = ref(
 )
 
 const authStoreGlobal = ref(false)
-const formData = ref({
-  email: '',
-  integrationName: '',
-  tokenIntegration: '',
-});
+// const formData = ref({
+//   email: '',
+//   integrationName: '',
+//   tokenIntegration: '',
+// });
 
 const tokenAuthPanda = ref(false)
 const authLink = ref(false)
@@ -64,45 +64,45 @@ const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
 }
 
-const createToken = async (token) => {
+// const createToken = async (token) => {
   
-  setTimeout (
-    (async () => {
-      formData.value = {
-        email: authStoreGlobal.value.user.email,
-        integrationName: 'Panda',
-        tokenIntegration: tokenAuthPanda.value.code,
-      }
+//   setTimeout (
+//     (async () => {
+//       formData.value = {
+//         email: authStoreGlobal.value.user.email,
+//         integrationName: 'Panda',
+//         tokenIntegration: tokenAuthPanda.value.code,
+//       }
 
-      token = jwtDecode(token)
-      console.log(token)
-      const userId = token.id
+//       token = jwtDecode(token)
+//       console.log(token)
+//       const userId = token.id
       
-      try {
+//       try {
     
-        const response = await http.put(`/users/${userId}/token`, formData.value,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}` 
-          }
-        }
-        ) 
-        authStoreGlobal.value.setUser(response.data.user)
+//         const response = await http.put(`/users/${userId}/token`, formData.value,
+//         {
+//           headers: {
+//             'Authorization': `Bearer ${token}` 
+//           }
+//         }
+//         ) 
+//         authStoreGlobal.value.setUser(response.data.user)
         
-      } catch (error) {
-        console.error(error)
-      }
-    }), 2000 
-  )
-}
+//       } catch (error) {
+//         console.error(error)
+//       }
+//     }), 2000 
+//   )
+// }
     
 onMounted( () => {
   tokenAuthPanda.value = router.currentRoute.value.query
   const authStore = useAuthStore()
   authStoreGlobal.value = authStore
-  if(authStoreGlobal.value.token) {
-    createToken(authStoreGlobal.value.token )
-  }
+  // if(authStoreGlobal.value.token) {
+  //   createToken(authStoreGlobal.value.token )
+  // }
 })
 
 </script>
