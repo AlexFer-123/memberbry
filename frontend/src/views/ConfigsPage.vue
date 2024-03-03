@@ -19,12 +19,9 @@
             </span>
           </div>
           
-          <div v-if="authStoreGlobal.user?.integrations[0]?.token" >
+          <div>
             <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
           </div>
-          <div v-else>
-            <a class="py-2 px-6 bg-green-500 rounded-md text-white mt-2 cursor-pointer" target="_blank">Já autenticado</a>
-          </div> 
         
         </div>
       </div>
