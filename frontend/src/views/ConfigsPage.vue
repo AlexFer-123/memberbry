@@ -103,7 +103,7 @@ onMounted( () => {
   const authStore = useAuthStore()
   authStoreGlobal.value = authStore
   if(tokenAuthPanda.value?.code) {
-    console.log(authStoreGlobal.value.token)
+    console.log(authStore)
     createToken(authStoreGlobal.value.token)
   }
 })
