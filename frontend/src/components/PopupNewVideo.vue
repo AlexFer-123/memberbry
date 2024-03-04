@@ -89,7 +89,7 @@ const createLesson = async () => {
       }
     )
   
-    console.log(response)
+    console.log('aqui', response)
   } catch (error) {
     console.error(error)
   }

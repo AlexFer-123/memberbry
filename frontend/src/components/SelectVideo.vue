@@ -48,7 +48,6 @@
   })
   
   onMounted(async () => {
-    console.log(authStore)
     if (authStore?.user?.integrations[0]?.token) {
       accessToken.value = await authStore.user.integrations[0].token.tokenAcess
       

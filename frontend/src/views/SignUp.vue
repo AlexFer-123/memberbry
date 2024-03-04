@@ -38,7 +38,7 @@
             <div class="sm:col-span-6">
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Endereço de e-mail</label>
               <div class="mt-2">
-                <input v-model="newUser.email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                <input v-model="newUser.email" id="email" name="email" type="email" autocomplete="email" pattern=".+@example\.com" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
               </div>
             </div>
 
@@ -58,8 +58,10 @@
         </div>
       </div>
 
-      <div :class="registerStatus.isDone ?  'sm:col-span-6  bg-green-500 py-4 px-6 rounded-md' : 'sm:col-span-6  bg-red-500 py-4 px-6 rounded-md'" >
-        <p class="text-white">{{ registerStatus.text }}</p>
+      <div v-if="registerStatus.isDone">
+        <div :class="registerStatus.isDone === 'created ' ?  'sm:col-span-6  bg-green-500 py-2 px-3 rounded-md' : 'sm:col-span-6  bg-red-500 py-4 px-6 rounded-md'" >
+          <p class="text-white">{{ registerStatus.text }}</p>
+        </div>
       </div>
   
       <div class="mt-6 flex items-center justify-end gap-x-6">
@@ -76,25 +78,23 @@ import { ref } from "vue"
 import http from '@/services/http'
 
 const newUser = ref({})
-const registerStatus = ref({})
+const registerStatus = ref(false)
 
 const register = async () => {
-
+  console.log(registerStatus.value)
   try {
-    const registerUser = await http.post('/auth/register', newUser.value)
-    if(registerUser.status === 201) {
+    await http.post('/auth/register', newUser.value)
       registerStatus.value = {
         text: "Usuário criado com sucesso",
-        isDone: true
+        isDone: 'created'
       } 
-    } else if (registerUser.status === 400) {
-        registerStatus.value = {
-        text: registerUser.data.msg,
-        isDone: false
-      }
     }
-  } catch (error) {
+   catch (error) {
     console.log(error)
+    registerStatus.value = {
+        text: error.response.data.error,
+        isDone: 'error'
+    }
   }
 }
 

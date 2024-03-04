@@ -4,33 +4,47 @@
     <div v-if="user.integrations">
 
       <div class="my-10">
-        <div class="flex justify-end">
-          <button class="bg-blue-600 text-white py-2 px-6 rounded-md" @click="openModal(openModalNewVideo)">Adicionar nova aula</button>
-          <PopupNewVideo :show="openModalNewVideo" :user="user" @close-modal="closeModalNewVideo"/>
+        <div class="flex justify-end gap-4">
+          <button class="bg-blue-300 hover:bg-blue-500 text-white py-2 px-6 rounded-md" @click="openModalNewVideoFunction(openModalNewVideo)">Adicionar nova aula</button>
+          <button class="bg-blue-300 hover:bg-blue-500 text-white py-2 px-6 rounded-md" @click="openModalUploadVideoFunction(openModalUploadVideo)">Subir vídeo</button>
         </div>
+        <PopupNewVideo :show="openModalNewVideo" :user="user" @close-modal="closeModalNewVideo"/>
+        <PopupUploadVideo :show="openModalUploadVideo" :user="user" @close-modal="closeModalUploadVideo"/>
       </div>
       <div v-if="user?.lessons.length > 0">
         <listLessons :lessons="user.lessons" />
       </div>
+      <div id="drag-drop"></div>
     </div>
   </div>
+  
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/store/main';
 import PopupNewVideo from '@/components/PopupNewVideo.vue'
+import PopupUploadVideo from '@/components/PopupUploadVideo.vue'
 import listLessons from '@/components/listLessons.vue';
 
 const authStore = useAuthStore()
 const user = ref(authStore)
 const openModalNewVideo = ref(false)
+const openModalUploadVideo = ref(false)
 
 const loadUser = async () => {
   user.value = await authStore.user;
 };
 
-const openModal = () => {
+const openModalUploadVideoFunction = () => {
+  openModalUploadVideo.value = !openModalUploadVideo.value
+}
+
+const closeModalUploadVideo = (open) => {
+  openModalUploadVideo.value = open
+}
+
+const openModalNewVideoFunction = () => {
   openModalNewVideo.value = !openModalNewVideo.value
 }
 

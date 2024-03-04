@@ -1,5 +1,5 @@
 <template>
-  <div :key="keyAddiction">
+  <div :key="keyAddiction" class="nav">
     <div v-if="logged">
       <Disclosure as="nav" class="shadow-sm sticky top-0 bg-white" v-slot="{ open }">
         <div class="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
@@ -150,4 +150,7 @@ watch(
 </script>
 
 <style scoped>
+ .nav{
+  z-index: 99999;
+ }
 </style>

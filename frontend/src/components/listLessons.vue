@@ -11,8 +11,8 @@
             </div>
           </div>
         </div>
-        <RouterLink :to="'/lessons/' + lesson.video.id">
-          <div class="w-12 flex align-center px-3.5 py-0.5 rounded-md cursor-pointer border-solid border-2">
+        <RouterLink :to="'/lessons/' + lesson.video.id" class="flex">
+          <div class="w-12 flex align-center px-4 mr-[auto] rounded-md cursor-pointer ">
             <PencilIcon class="text-blue-800" :size="24"/>
           </div>
         </RouterLink>
