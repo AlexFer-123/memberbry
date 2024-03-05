@@ -48,7 +48,6 @@
   
     const authStore = useAuthStore()
     const open = ref(false)
-    const uploadedFiles = ref([])
     const emit = defineEmits(['close-modal'])
     const closeModal = () => {
         if(!open.value) {

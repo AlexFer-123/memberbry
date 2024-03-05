@@ -34,68 +34,67 @@
 import { ref, onMounted } from "vue";
 import { router } from "@/router";
 import { useAuthStore } from '@/store/main';
-import  http  from '@/services/http'
-import { jwtDecode } from "jwt-decode";
+// import  http  from '@/services/http'
+// import { jwtDecode } from "jwt-decode";
 
 const integrations = ref([
   {
     name: 'Panda Video'
   }
 ])
-const oAuthInfos = ref(
-  {
-    client_id: "1gojsiuasqum4srpcqu0c036gr",
-    scope: "aws.cognito.signin.user.admin",
-    redirect_uri: "https://membry.netlify.app/configs"
-  }
-)
+// const oAuthInfos = ref(
+//   {
+//     client_id: "1gojsiuasqum4srpcqu0c036gr",
+//     scope: "aws.cognito.signin.user.admin",
+//     redirect_uri: "https://membry.netlify.app/configs"
+//   }
+// )
 
 const authStoreGlobal = ref(false)
-const formData = ref({
-  email: '',
-  integrationName: '',
-  tokenIntegration: '',
-});
+// const formData = ref({
+//   email: '',
+//   integrationName: '',
+//   tokenIntegration: '',
+// });
 
 const tokenAuthPanda = ref(false)
-const authLink = ref(false)
+// const authLink = ref(false)
 
-const auth2Panda = async () => {
-  authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
-}
+// const auth2Panda = async () => {
+//   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
+// }
 
-const createToken = async (token) => {
+// const createToken = async (token) => {
   
-  setTimeout (
-    (async () => {
-      formData.value = {
-        email: authStoreGlobal.value.user.email,
-        integrationName: 'Panda',
-        tokenIntegration: tokenAuthPanda.value.code,
-      }
+//   setTimeout (
+//     (async () => {
+//       formData.value = {
+//         email: authStoreGlobal.value.user.email,
+//         integrationName: 'Panda',
+//         tokenIntegration: tokenAuthPanda.value.code,
+//       }
 
-      console.log(token)
-      const tokenDecoded = jwtDecode(token)
-      const userId = tokenDecoded.id
+//       const tokenDecoded = jwtDecode(token)
+//       const userId = tokenDecoded.id
       
-      try {
+//       try {
     
-        const response = await http.put(`/users/${userId}/token`, formData.value,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}` 
-          }
-        }
-        ) 
-        authStoreGlobal.value.setUser(response.data.user)
-        console.log('usuário autenticado')
+//         const response = await http.put(`/users/${userId}/token`, formData.value,
+//         {
+//           headers: {
+//             'Authorization': `Bearer ${token}` 
+//           }
+//         }
+//         ) 
+//         authStoreGlobal.value.setUser(response.data.user)
+//         console.log('usuário autenticado')
         
-      } catch (error) {
-        console.error(error)
-      }
-    }), 2000 
-  )
-}
+//       } catch (error) {
+//         console.error(error)
+//       }
+//     }), 2000 
+//   )
+// }
     
 onMounted( () => {
   tokenAuthPanda.value = router.currentRoute.value.query
@@ -104,7 +103,7 @@ onMounted( () => {
   authStoreGlobal.value = authStore
   if(tokenAuthPanda.value?.code) {
     console.log(authStore)
-    createToken(authStoreGlobal.value.token)
+    // createToken(authStoreGlobal.value?.token)
   }
 })
 
