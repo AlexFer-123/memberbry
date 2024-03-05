@@ -52,8 +52,6 @@
     const emit = defineEmits(['close-modal'])
     const closeModal = () => {
         if(!open.value) {
-            console.log(authStore.user.integrations[0].token.tokenAcess)
-            console.log(uppy, uploadedFiles)
             open.value = false
             emit('close-modal', open.value)
         }
@@ -77,7 +75,6 @@
     });
 
     uppy.on('file-added', (file) => {
-        console.log(file)
         const video_id = uuidv4();
         uppy.setFileMeta(file.id, {
           authorization: authStore.user.integrations[0].token.tokenAcess,
