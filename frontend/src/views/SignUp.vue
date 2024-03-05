@@ -57,45 +57,49 @@
             </div>
         </div>
       </div>
-
-      <div v-if="registerStatus.isDone">
-        <div :class="registerStatus.isDone === 'created ' ?  'sm:col-span-6  bg-green-500 py-2 px-3 rounded-md' : 'sm:col-span-6  bg-red-500 py-4 px-6 rounded-md'" >
-          <p class="text-white">{{ registerStatus.text }}</p>
-        </div>
-      </div>
   
       <div class="mt-6 flex items-center justify-end gap-x-6">
         <RouterLink to="/" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</RouterLink>
         <button @click.prevent="register()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cadastrar</button>
       </div>
     </form>
+    
+    <div v-if="registerStatus.isDone">
+      <div :class="registerStatus.isDone === 'created' ?  'sm:col-span-6  bg-green-500 py-2 px-3 mt-4 rounded-md' : 'sm:col-span-6  bg-red-500 py-2 px-3 mt-4 rounded-md'" >
+        <p class="text-white">{{ registerStatus.text }}</p>
+      </div>
     </div>
+  </div>
 
 </template>
   
 <script setup>
 import { ref } from "vue"
 import http from '@/services/http'
+import { router } from "@/router";
 
 const newUser = ref({})
 const registerStatus = ref(false)
 
 const register = async () => {
-  console.log(registerStatus.value)
   try {
     await http.post('/auth/register', newUser.value)
-      registerStatus.value = {
-        text: "Usuário criado com sucesso",
-        isDone: 'created'
-      } 
-    }
-   catch (error) {
+    registerStatus.value = {
+      text: "Usuário criado com sucesso",
+      isDone: 'created'
+    } 
+  }
+  catch (error) {
     console.log(error)
     registerStatus.value = {
-        text: error.response.data.error,
-        isDone: 'error'
+      text: error.response.data.error,
+      isDone: 'error'
     }
   }
+
+  setTimeout(() => {
+    router.push('/')
+  }, 1500)
 }
 
 </script>

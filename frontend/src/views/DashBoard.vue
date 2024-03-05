@@ -3,10 +3,10 @@
     <h1 class="text-center my-6 text-lg font-semibold">Seja bem vindo <span class="capitalize text-purple-800">{{ user.name }}</span></h1>  
     <div v-if="user.integrations">
 
-      <div class="my-10">
+      <div class="my-10" v-if="user?.integrations.length > 0">
         <div class="flex justify-end gap-4">
-          <button class="bg-blue-300 hover:bg-blue-500 text-white py-2 px-6 rounded-md" @click="openModalNewVideoFunction(openModalNewVideo)">Adicionar nova aula</button>
-          <button class="bg-blue-300 hover:bg-blue-500 text-white py-2 px-6 rounded-md" @click="openModalUploadVideoFunction(openModalUploadVideo)">Subir vídeo</button>
+          <button class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-6 rounded-md" @click="openModalNewVideoFunction(openModalNewVideo)">Adicionar nova aula</button>
+          <button class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-6 rounded-md" @click="openModalUploadVideoFunction(openModalUploadVideo)">Subir vídeo</button>
         </div>
         <PopupNewVideo :show="openModalNewVideo" :user="user" @close-modal="closeModalNewVideo"/>
         <PopupUploadVideo :show="openModalUploadVideo" :user="user" @close-modal="closeModalUploadVideo"/>
