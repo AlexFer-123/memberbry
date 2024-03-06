@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstace = axios.create({
-    baseURL: 'http://localhost:4567',
+    baseURL: 'https://membry.onrender.com',
     headers: {
         "Content-Type": 'application/json'
     }
