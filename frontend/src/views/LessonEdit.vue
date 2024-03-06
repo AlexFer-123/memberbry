@@ -2,12 +2,11 @@
     <div v-if="user" class="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8 flex gap-11">
 
         <div class="video-section w-full">
-            <div v-for="lesson in user.lessons" :key="lesson">
-                <div v-if="lesson.video.id === $route.params.id" class="my-8">
-                    <span class="sr-only">Get video {{ getLesson(lesson.video.video_player) }}</span>
+            <div >
+                <div class="my-8">
                     <h3 class="subtitle my-8">Edição de vídeo</h3>
-                    <div style="position:relative;padding-top:56.25%;z-index: -10">
-                        <iframe  :key="keyVideo" :id="'panda-' + lesson.video.id" 
+                    <div style="position:relative;padding-top:56.25%">
+                        <iframe :id="panda-player" 
                             :src="videoURLEmbed" 
                             style="border:none;position:absolute;top:0;left:0;" 
                             allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
@@ -32,6 +31,10 @@
                         </Switch>
 
                     </div>
+
+                    <div>
+                        <div href="#" class="-mx-3 block rounded-md px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 p"><span class="text-sm py-2 px-6 bg-purple-600 border-lg text-white cursor-pointer" @click="copyToClipboard">Copiar link do video</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,12 +57,12 @@
 
 <script setup>
     import { useAuthStore } from '@/store/main';
-    import { ref } from 'vue';
+    import { ref, onMounted } from 'vue';
     import { Switch } from '@headlessui/vue'
+import { router } from '@/router';
 
     const authStore = useAuthStore()
     const user = ref(authStore.user)
-    const keyVideo = ref(0)
     const videoURLEmbed = ref('')
     const IsPandaVideo = ref(null)
     const videoConfigs = ref([
@@ -77,18 +80,36 @@
         return IsPandaVideo.value 
     }
 
-    const getLesson = (videoURL) => {
-        videoURLEmbed.value = videoURL
-        return videoURLEmbed.value
+    const getLessonConfig = (config) => {
+        if(!config.status) {
+            videoURLEmbed.value += config.code
+            console.log( videoURLEmbed.value)
+        } else {
+            videoURLEmbed.value = videoURLEmbed.value.replace(config.code, '')
+            console.log(videoURLEmbed.value);
+        }
     }
 
-    const getLessonConfig = (config) => {
-        if(!config.status === true) {
-            videoURLEmbed.value += config.code
-            keyVideo.value++
+    const copyToClipboard = () => {
+    // Copiar o conteúdo para a área de transferência
+    navigator.clipboard.writeText(videoURLEmbed.value)
+        .then(() => {
+        alert('Link do vídeo copiado para a área de transferência!');
+        })
+        .catch((error) => {
+        console.error('Erro ao copiar para a área de transferência:', error);
+        });
+    };
+    
+    onMounted(() => {
+        const lessons = authStore.user.lessons
+        const pageVideoExternald = router.currentRoute.value.query.external_id
+        
+        for (let lesson in lessons) {
+            console.log(pageVideoExternald, lessons[lesson])
+            videoURLEmbed.value = lessons[lesson].video.video_player
         }
-        return videoURLEmbed.value
-    }
+    })
 
 </script>
 

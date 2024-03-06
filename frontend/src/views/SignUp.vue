@@ -38,7 +38,7 @@
             <div class="sm:col-span-6">
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Endereço de e-mail</label>
               <div class="mt-2">
-                <input v-model="newUser.email" id="email" name="email" type="email" autocomplete="email" pattern=".+@example\.com" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                <input v-model="newUser.email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
               </div>
             </div>
 
