@@ -60,7 +60,9 @@
   
       <div class="mt-6 flex items-center justify-end gap-x-6">
         <RouterLink to="/" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</RouterLink>
-        <button @click.prevent="register()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cadastrar</button>
+        <button @click.prevent="register()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          {{ isLoading ? 'Carregando' : 'Cadastrar' }}
+        </button>
       </div>
     </form>
     
@@ -78,16 +80,21 @@ import { ref } from "vue"
 import http from '@/services/http'
 import { router } from "@/router";
 
+const isLoading = ref(false)
 const newUser = ref({})
 const registerStatus = ref(false)
 
 const register = async () => {
+  isLoading.value = true
   try {
     await http.post('/auth/register', newUser.value)
     registerStatus.value = {
       text: "Usuário criado com sucesso",
       isDone: 'created'
     } 
+    setTimeout(() => {
+      router.push('/')
+    }, 1500)
   }
   catch (error) {
     console.log(error)
@@ -96,10 +103,7 @@ const register = async () => {
       isDone: 'error'
     }
   }
-
-  setTimeout(() => {
-    router.push('/')
-  }, 1500)
+  isLoading.value = false
 }
 
 </script>
