@@ -61,7 +61,7 @@
       <div class="mt-6 flex items-center justify-end gap-x-6">
         <RouterLink to="/" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</RouterLink>
         <button @click.prevent="register()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          {{ isLoading ? 'Carregando' : 'Cadastrar' }}
+          {{ isLoading ? 'Cadastrando' : 'Cadastrar' }}
         </button>
       </div>
     </form>
