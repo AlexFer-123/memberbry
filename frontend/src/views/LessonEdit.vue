@@ -4,61 +4,33 @@
         <div class="video-section w-full">
             <div v-for="lesson in user.lessons" :key="lesson">
                 <div v-if="lesson.video.id === $route.params.id" class="my-8">
-
+                    <span class="sr-only">Get video {{ getLesson(lesson.video.video_player) }}</span>
                     <h3 class="subtitle my-8">Edição de vídeo</h3>
                     <div style="position:relative;padding-top:56.25%;z-index: -10">
-                        <iframe :key="keyVideo" :id="'panda-' + lesson.video.id" 
-                            :src="getLessonConfig(lesson.video.video_player)" 
+                        <iframe  :key="keyVideo" :id="'panda-' + lesson.video.id" 
+                            :src="videoURLEmbed" 
                             style="border:none;position:absolute;top:0;left:0;" 
                             allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
                             allowfullscreen=true width="100%" height="100%" fetchpriority="high"
                         ></iframe>
                     </div>
     
-                    <div class="feat-player col-12 col-lg-6 my-4 d-flex">
-                        <h4 class="text-base text-[#262626] font-semibold">Autoplay</h4>
+                    <div v-for="config in videoConfigs" :key="config" class="feat-player col-12 col-lg-6 my-4 d-flex">
+                        <h4 class="text-base text-[#262626] font-semibold">{{ config.name}}</h4>
                         <Switch
-                            v-model="videoConfigs[0].status"
-                            :class="videoConfigs[0].status ? 'bg-teal-900' : 'bg-teal-700'"
+                            v-model="config.status"
+                            :class="config.status ? 'bg-teal-900' : 'bg-teal-700'"
+                            @click="getLessonConfig(config)"
                             class="relative inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
                             >
                             <span class="sr-only">Use setting</span>
                             <span
                                 aria-hidden="true"
-                                :class="videoConfigs[0].status ? 'translate-x-5' : 'translate-x-0'"
+                                :class="config.status ? 'translate-x-5' : 'translate-x-0'"
                                 class="pointer-events-none inline-block h-[15px] w-[15px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
                             />
                         </Switch>
-                    </div>
-                    <div class="feat-player col-12 col-lg-6 my-4 d-flex">
-                        <h4 class="text-base text-[#262626] font-semibold">Barra de Progresso Fictícia</h4>
-                        <Switch
-                            v-model="videoConfigs[1].status"
-                            :class="videoConfigs[1].status ? 'bg-teal-900' : 'bg-teal-700'"
-                            class="relative inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-                            >
-                            <span class="sr-only">Use setting</span>
-                            <span
-                                aria-hidden="true"
-                                :class="videoConfigs[1].status ? 'translate-x-5' : 'translate-x-0'"
-                                class="pointer-events-none inline-block h-[15px] w-[15px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
-                            />
-                        </Switch>
-                    </div>
-                    <div class="feat-player col-12 col-lg-6 my-4 d-flex">
-                        <h4 class="text-base text-[#262626] font-semibold">Salvar progresso do vídeo</h4>
-                        <Switch
-                            v-model="videoConfigs[2].status"
-                            :class="videoConfigs[2].status ? 'bg-teal-900' : 'bg-teal-700'"
-                            class="relative inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-                            >
-                            <span class="sr-only">Use setting</span>
-                            <span
-                                aria-hidden="true"
-                                :class="videoConfigs[2].status ? 'translate-x-5' : 'translate-x-0'"
-                                class="pointer-events-none inline-block h-[15px] w-[15px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
-                            />
-                        </Switch>
+
                     </div>
                 </div>
             </div>
@@ -82,27 +54,18 @@
 
 <script setup>
     import { useAuthStore } from '@/store/main';
-    import { ref, watch } from 'vue';
+    import { ref } from 'vue';
     import { Switch } from '@headlessui/vue'
 
     const authStore = useAuthStore()
     const user = ref(authStore.user)
     const keyVideo = ref(0)
-    const videoURLEmbed = ref(false)
+    const videoURLEmbed = ref('')
     const IsPandaVideo = ref(null)
     const videoConfigs = ref([
-        {
-            name: 'autoplay',
-            status: false
-        },
-        {
-            name: 'alternativeProgress',
-            status: false
-        },
-        {
-            name: 'saveProgress',
-            status: false
-        }
+        { name: 'Autoplay', code: '&autoplay=true', status: false },
+        { name: 'Barra de Progresso Fictícia', code: '&alternativeProgress=true&alternativeProgressHeight=4', status: false },
+        { name: 'Salvar Progresso', code: '&saveProgress=true', status: false }
     ])   
 
     const CheckHostPanda = lesson => {
@@ -114,35 +77,23 @@
         return IsPandaVideo.value 
     }
 
-    const getLessonConfig = (videoURL) => {
+    const getLesson = (videoURL) => {
         videoURLEmbed.value = videoURL
-        for(let i = 0; i < videoConfigs.value.length; i++) {
+        return videoURLEmbed.value
+    }
 
-            let config = videoConfigs.value[i]
-            if(videoConfigs.value[i].status) {
-                videoURLEmbed.value += `&${config.name}=${config.status}&alternativeProgressHeight=4`
-                console.log(videoURLEmbed.value)
-            }
-
+    const getLessonConfig = (config) => {
+        if(!config.status === true) {
+            videoURLEmbed.value += config.code
+            keyVideo.value++
         }
         return videoURLEmbed.value
     }
 
-    watch(
-        () => videoConfigs.value[0].status || videoConfigs.value[1].status || videoConfigs.value[2].status,
-        (modifiedVideo) => {
-            console.log(videoURLEmbed.value, modifiedVideo)
-            getLessonConfig(videoURLEmbed.value)
-            keyVideo.value++
-        }
-    );
-
 </script>
 
 <style scoped>
-.card {
-  
-}
+
 h3.subtitle {
     @apply text-3xl;
     @apply text-[#262626];

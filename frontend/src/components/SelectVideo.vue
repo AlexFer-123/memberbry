@@ -14,15 +14,17 @@
         <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
           <ListboxOptions class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             <ListboxOption as="template" v-for="video in videos" :key="video" :value="video" v-slot="{ active, selected }">
-              <li :class="[active ? 'bg-indigo-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                <div class="flex items-center">
-                  <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">{{ video.title }}</span>
-                </div>
-  
-                <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span>
-              </li>
+              <div v-if="video.status !== 'FAILED'">
+                <li :class="[active ? 'bg-indigo-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
+                  <div class="flex items-center">
+                    <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">{{ video.title }}</span>
+                  </div>
+    
+                  <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
+                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </li>
+              </div>
             </ListboxOption>
           </ListboxOptions>
         </transition>
@@ -37,7 +39,7 @@
   import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
   import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
   
-  const videos = ref({})
+  const videos = ref([])
   const selected = ref({})
   const authStore = useAuthStore()
   const accessToken = ref(null)
@@ -60,9 +62,13 @@
             }
           })
           
-          videos.value = ret.data.videos
-          selected.value = videos.value[0]
-          console.log(selected.value)
+          for(let video in ret.data.videos) {
+            if(ret.data.videos[video].status !== 'FAILED') {
+              videos.value.push(ret.data.videos[video])
+              selected.value = videos.value[0]
+            }
+          }
+          
           emit('video-selected', selected.value)
         } catch (error) {
           console.error(error)
