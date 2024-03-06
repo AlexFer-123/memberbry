@@ -39,7 +39,6 @@
     import { Dashboard } from '@uppy/vue';
     import { useAuthStore } from '@/store/main';
 	import Uppy from '@uppy/core';
-    import Url from '@uppy/url';
     import Tus from '@uppy/tus'
 	import '@uppy/core/dist/style.css';
 	import '@uppy/dashboard/dist/style.css';
@@ -69,9 +68,7 @@
         endpoint: 'https://uploader-us01.pandavideo.com.br/files/',
         resume: true,
         limit: 1
-    }).use(Url, {
-        companionUrl: 'https://import.pandavideo.com:9443/videos/',
-    });
+    })
 
     uppy.on('file-added', (file) => {
         const video_id = uuidv4();
