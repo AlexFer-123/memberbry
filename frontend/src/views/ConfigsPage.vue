@@ -20,7 +20,7 @@
           </div>
           
           <div v-if="authStore.user?.integrations.length <= 0">
-            <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
+            <a :href="authLink" @click="auth2Panda()" :class="isLoading ? 'bg-slate-800': 'bg-slate-300'" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank" :disabled="isLoading">Auth</a>
           </div>
           <div v-else>
             <a class="py-2 px-6 bg-green-600 rounded-md text-white mt-2" target="_blank">Autenticado</a>
@@ -63,6 +63,7 @@ const tokenAuthPanda = ref(false)
 const authLink = ref(false)
 const authStore = useAuthStore()
 const authStoreGlobal = ref(authStore)
+const isLoading = ref(false)
 
 const auth2Panda = async () => {
   authLink.value = `https://auth.pandavideo.com.br/oauth2/authorize?client_id=${oAuthInfos.value.client_id}&response_type=code&scope=${oAuthInfos.value.scope}&redirect_uri=${oAuthInfos.value.redirect_uri}`
@@ -98,6 +99,7 @@ const checkToken = async (token) => {
 }
     
 onMounted( async () => {
+  isLoading.value = true
   tokenAuthPanda.value = router.currentRoute.value.query
   authStoreGlobal.value = await authStore
 
@@ -106,9 +108,11 @@ onMounted( async () => {
     setTimeout(() => {
       try {
         checkToken( authStoreGlobal.value.token)
+        isLoading.value = false
       } catch (error) {
         renderTemplate.value++
         checkToken( authStoreGlobal.value.token)
+        isLoading.value = false
       }
     },2000)
     }
