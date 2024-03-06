@@ -26,7 +26,7 @@
             </div>
             <RouterLink :to="'/lessons/' + lesson.video?.id" class="flex">
               <div class="w-12 flex align-center px-4 mr-[auto] rounded-md cursor-pointer ">
-                <PencilIcon class="text-blue-800" :size="24"/>
+                <PencilIcon class="text-purple-600 hover:text-purple-800" :size="24"/>
               </div>
             </RouterLink>
           </li>
@@ -44,6 +44,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/store/main';
 import PopupNewVideo from '@/components/PopupNewVideo.vue'
 import PopupUploadVideo from '@/components/PopupUploadVideo.vue'
+import { PencilIcon  } from '@heroicons/vue/24/solid'
 
 const authStore = useAuthStore()
 const user = ref(authStore)
