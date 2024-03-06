@@ -121,6 +121,7 @@ onMounted( async () => {
 watch(
   () => authStoreGlobal.value,
   (authenticated) => {
+    isLoading.value = true
     if(tokenAuthPanda.value?.code) {
       try {
         checkToken(authenticated.token)
@@ -129,6 +130,7 @@ watch(
         checkToken(authenticated.token)
       }
     }
+    isLoading.value = false
   }
 );
 
