@@ -91,5 +91,7 @@ watch(() => authStore.isAuthenticated, () => {
 </script>
 
 <style>
-
+.uppy-c-btn-primary {
+  @apply bg-purple-500 hover:bg-purple-700 !important;
+}
 </style>
