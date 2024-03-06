@@ -19,8 +19,11 @@
             </span>
           </div>
           
-          <div>
+          <div v-if="authStore.user?.integrations.length <= 0">
             <a :href="authLink" @click="auth2Panda()" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank">Auth</a>
+          </div>
+          <div v-else>
+            <a class="py-2 px-6 bg-green-600 rounded-md text-white mt-2" target="_blank">Autenticado</a>
           </div>
         
         </div>
@@ -97,6 +100,8 @@ const checkToken = async (token) => {
 onMounted( async () => {
   tokenAuthPanda.value = router.currentRoute.value.query
   authStoreGlobal.value = await authStore
+
+  console.log(authStoreGlobal.value.user?.integrations.length)
   if(tokenAuthPanda.value?.code) {
     setTimeout(() => {
       try {
