@@ -2,7 +2,7 @@
     <ul role="list" class="divide-y divide-gray-100">
       <li v-for="lesson in lessons" :key="lesson" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
-          <img class="h-12 w-12 flex-none rounded-md bg-gray-50" :src="lesson.video.thumbnail" alt="" />
+          <img class="h-12 w-12 flex-none rounded-md bg-gray-50" :src="lesson.video?.thumbnail" alt="" />
           <div class="flex justify-between">
 
             <div class="min-w-0 flex-auto">
@@ -11,7 +11,7 @@
             </div>
           </div>
         </div>
-        <RouterLink :to="'/lessons/' + lesson.video.id" class="flex">
+        <RouterLink :to="'/lessons/' + lesson.video?.id" class="flex">
           <div class="w-12 flex align-center px-4 mr-[auto] rounded-md cursor-pointer ">
             <PencilIcon class="text-blue-800" :size="24"/>
           </div>

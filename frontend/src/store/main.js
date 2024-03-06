@@ -17,6 +17,9 @@ export const useAuthStore = defineStore('useAuthStore', {
       setUser(user) {
         this.user = user;
       },
+      setNewLesson(lesson) {
+        this.user.lessons.push(lesson)
+      },
       setError(error) {
         this.error = error
       },

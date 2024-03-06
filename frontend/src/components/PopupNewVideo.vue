@@ -33,9 +33,10 @@
                         <div class="mb-3">
                             <SelectVideo @video-selected="SelectedVideo"/>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-900 sm:pr-12">{{ selectedVideoInfos.title }}</h2>
+                        <p class="text-sm text-gray-900 sm:pr-12 font-bold">Video status: <span class=" font-normal">{{ selectedVideoInfos.status }}</span></p>
+                        <p class="text-sm text-gray-900 sm:pr-12 font-bold flex gap-2">Link: <a :href="selectedVideoInfos.video_player" target="_blank"  class="font-normal flex gap-2 items-center">Abrir vídeo <ArrowTopRightOnSquareIcon class="w-4 h-4"/></a></p>
   
-                        <div class="my-4">
+                        <div class="my-4" :disabled="SelectedVideo.status === 'DRAFT' || SelectedVideo.status === 'CONVERTING'">
                             <button @click="createLesson" class="bg-blue-600 py-2 px-6 rounded-md text-white">Criar aula</button>
                         </div>
                     </div>
@@ -61,6 +62,7 @@ import {
     TransitionRoot,
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 
 const authStore = useAuthStore()
 const open = ref(false)
@@ -77,7 +79,7 @@ const createLesson = async () => {
 
   try {
     
-    const response = await http.put(`/users/${props.user._id}/lessons`, {
+    await http.put(`/users/${props.user._id}/lessons`, {
         name: selectedVideoInfos.value.title,
         description: selectedVideoInfos.value.description,
         video: selectedVideoInfos.value
@@ -88,8 +90,9 @@ const createLesson = async () => {
           }
       }
     )
-  
-    console.log('aqui', response)
+      
+    authStore.setNewLesson(selectedVideoInfos.value)
+    closeModal()
   } catch (error) {
     console.error(error)
   }
