@@ -1,5 +1,5 @@
 <template>
-    <div v-if="user" class="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8 flex gap-11">
+    <div v-if="user" class="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8 flex gap-11 relative">
 
         <div class="video-section w-full">
             <div >
@@ -91,13 +91,12 @@ import { router } from '@/router';
     }
 
     const copyToClipboard = () => {
-    // Copiar o conteúdo para a área de transferência
-    navigator.clipboard.writeText(videoURLEmbed.value)
+        navigator.clipboard.writeText(videoURLEmbed.value)
         .then(() => {
-        alert('Link do vídeo copiado para a área de transferência!');
+            alert('Link do vídeo copiado para a área de transferência!');
         })
         .catch((error) => {
-        console.error('Erro ao copiar para a área de transferência:', error);
+            console.error('Erro ao copiar para a área de transferência:', error);
         });
     };
     
