@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </div>
-              <RouterLink :to="'/lessons/' + lesson.video?.id" class="flex">
+              <RouterLink :to="'/lessons/' + lesson.video?.id + `?external_id=${lesson.video.video_external_id}`" class="flex">
                 <div class="w-12 flex align-center px-4 mr-[auto] rounded-md cursor-pointer ">
                   <PencilIcon class="text-purple-600 hover:text-purple-800" :size="24"/>
                 </div>

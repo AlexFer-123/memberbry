@@ -1,7 +1,9 @@
 <template>
   <div>
-    <NavBar />
-    <RouterView />
+    <NavBar class="z-[10] relative" />
+    <div>
+      <RouterView />
+    </div>
   </div>
 </template>
 
