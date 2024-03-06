@@ -20,7 +20,7 @@
           </div>
           
           <div v-if="authStore.user?.integrations.length <= 0">
-            <a :href="authLink" @click="auth2Panda()" :class="isLoading ? 'bg-slate-800': 'bg-slate-300'" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank" :disabled="isLoading">Auth</a>
+            <a :href="authLink" @click="auth2Panda()" :class="isLoading ? 'bg-slate-300': 'bg-slate-800'" class="py-2 px-6 bg-slate-800 rounded-md text-white mt-2" target="_blank" :disabled="isLoading">Auth</a>
           </div>
           <div v-else>
             <a class="py-2 px-6 bg-green-600 rounded-md text-white mt-2" target="_blank">Autenticado</a>
@@ -112,10 +112,10 @@ onMounted( async () => {
       } catch (error) {
         renderTemplate.value++
         checkToken( authStoreGlobal.value.token)
-        isLoading.value = false
       }
     },2000)
-    }
+  }
+  isLoading.value = false
 })
 
 watch(
