@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: memberbry-backend
+    env: node
+    plan: free
+    runtime: node
+    buildCommand: npm ci --production
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=256 --enable-source-maps"
+      - key: NODE_VERSION
+        value: "22"
