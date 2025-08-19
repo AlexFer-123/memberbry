@@ -7,11 +7,14 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host 0.0.0.0 --port $PORT",
+    "serve:dev": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:prod": "NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' vue-cli-service build --mode production",
     "build:vercel": "NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' VERCEL=1 vue-cli-service build --mode production --no-clean",
+    "start": "node start-render.js",
+    "start:render": "node start-render.js",
     "lint": "vue-cli-service lint",
     "preview": "vite preview"
   },

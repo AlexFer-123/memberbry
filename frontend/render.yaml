@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: memberbry-frontend
+    env: node
+    plan: free
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: node start-render.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: PORT
+        value: "10000"
+      - key: HOST
+        value: "0.0.0.0"

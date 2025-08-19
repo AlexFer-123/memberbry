@@ -100,5 +100,24 @@ module.exports = defineConfig({
   },
   // Configurações específicas para Vercel
   parallel: process.env.VERCEL ? false : require('os').cpus().length > 1,
-  lintOnSave: process.env.NODE_ENV !== 'production'
+  lintOnSave: process.env.NODE_ENV !== 'production',
+  
+  // Configurações do dev server para Render.com
+  devServer: {
+    allowedHosts: 'all', // Permite todos os hosts (resolve o "Invalid Host header")
+    host: '0.0.0.0', // Aceita conexões de qualquer IP
+    port: process.env.PORT || 8080, // Usa a porta definida pelo Render
+    client: {
+      webSocketURL: 'auto://0.0.0.0:0/ws' // WebSocket config para Render
+    },
+    historyApiFallback: true, // Para SPA routing
+    compress: true, // Compressão gzip
+    hot: true, // Hot module replacement
+    // Headers de segurança
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    }
+  }
 })
