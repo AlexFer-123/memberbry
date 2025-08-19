@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const User = require('../models/User')
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 class AuthController {
     async register(req, res) {
@@ -117,4 +117,4 @@ class AuthController {
     }
 }
 
-module.exports = new AuthController()
+export default new AuthController();

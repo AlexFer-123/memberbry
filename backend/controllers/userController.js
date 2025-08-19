@@ -1,5 +1,5 @@
-const User = require('../models/User')
-const pandaService = require('../services/pandaService')
+import User from '../models/User.js';
+import pandaService from '../services/pandaService.js';
 
 class UserController {
     async getUser(req, res) {
@@ -111,4 +111,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController()
+export default new UserController();

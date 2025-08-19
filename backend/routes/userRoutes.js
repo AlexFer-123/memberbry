@@ -1,6 +1,6 @@
-const express = require('express')
-const userController = require('../controllers/userController')
-const { checkToken } = require('../middlewares/auth')
+import express from 'express';
+import userController from '../controllers/userController.js';
+import { checkToken } from '../middlewares/auth.js';
 
 const router = express.Router()
 
@@ -19,4 +19,4 @@ router.put('/:id/token', userController.updateIntegrationToken)
 // @access  Private
 router.put('/:id/lessons', checkToken, userController.addLesson)
 
-module.exports = router
+export default router;

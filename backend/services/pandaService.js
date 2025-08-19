@@ -1,6 +1,6 @@
-require('dotenv').config()
-const axios = require("axios")
-const querystring = require("querystring")
+import 'dotenv/config';
+import axios from 'axios';
+import querystring from 'querystring';
 
 class PandaService {
     constructor() {
@@ -39,4 +39,4 @@ class PandaService {
     }
 }
 
-module.exports = new PandaService()
+export default new PandaService();
