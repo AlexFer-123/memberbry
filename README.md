@@ -2,6 +2,8 @@
 
 A modern online course management platform with complete authentication system and video integration.
 
+![Memberbry Login Preview](Login%20Preview.png)
+
 ## 🚀 Overview
 
 Memberbry is a full-stack application that allows you to create and manage online courses, featuring video upload capabilities, JWT authentication, and external video API integration. The platform provides a modern and intuitive interface for educators to create and organize their lessons.
