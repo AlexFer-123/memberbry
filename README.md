@@ -32,6 +32,12 @@ Memberbry is a full-stack application that allows you to create and manage onlin
   - Custom banner
   - Account settings
 
+- 🧩 **Microfrontend Architecture**
+  - Reusable login component
+  - Configurable themes and validations
+  - Multi-tenant support
+  - Module Federation ready
+
 ## 🛠️ Technologies Used
 
 ### Backend
@@ -63,16 +69,25 @@ memberbry/
 ├── backend/
 │   ├── models/
 │   │   └── User.js          # User model
+│   ├── controllers/         # Route controllers
+│   ├── middlewares/         # Authentication middleware
+│   ├── routes/              # API routes
+│   ├── services/            # Business logic
 │   ├── index.js             # Main server
-│   ├── pandaApi.js          # External API integration
 │   └── package.json
 └── frontend/
     ├── src/
-    │   ├── components/      # Vue components
-    │   ├── views/           # Application pages
-    │   ├── router/          # Route configuration
-    │   ├── store/           # State management
-    │   └── services/        # HTTP services
+    │   ├── components/
+    │   │   ├── microfrontend/ # Reusable microfrontend components
+    │   │   │   ├── LoginMicrofrontend.vue
+    │   │   │   ├── index.js   # Configuration utilities
+    │   │   │   └── README.md  # Microfrontend documentation
+    │   │   └── ui/            # Shared UI components
+    │   ├── examples/          # Usage examples
+    │   ├── views/             # Application pages
+    │   ├── router/            # Route configuration
+    │   ├── store/             # State management
+    │   └── services/          # HTTP services
     ├── public/
     └── package.json
 ```
@@ -167,6 +182,44 @@ The application features a modern interface built with:
 - **Headless UI** for accessible components
 - **Heroicons** for consistent icons
 - **Responsive design** for all devices
+
+## 🧩 Microfrontend Components
+
+The project includes reusable microfrontend components that can be integrated into other applications:
+
+### Login Microfrontend
+A fully configurable login component with:
+- **Multiple themes**: Default, minimal, dark
+- **Customizable validation**: Email and password rules
+- **Event-driven integration**: Login success/error callbacks
+- **Multi-tenant support**: Different configurations per client
+- **JWT authentication**: Secure token management
+
+### Usage Example
+```vue
+<template>
+  <LoginMicrofrontend
+    api-base-url="https://your-api.com"
+    title="Your Application"
+    @login-success="handleLogin"
+  />
+</template>
+
+<script setup>
+import LoginMicrofrontend from '@/components/microfrontend/LoginMicrofrontend.vue'
+
+const handleLogin = (authData) => {
+  console.log('User logged in:', authData)
+}
+</script>
+```
+
+### Integration Options
+1. **Direct Import**: Use within the same Vue.js application
+2. **NPM Library**: Publish and install as a package
+3. **Module Federation**: Remote microfrontend consumption
+
+For detailed documentation, see: `frontend/src/components/microfrontend/README.md`
 
 ## 🔧 Deployment Configuration
 

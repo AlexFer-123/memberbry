@@ -28,12 +28,24 @@ frontend/
 │   │   │   └── global.css   # Global styles
 │   │   └── logo.png        # App logo
 │   ├── components/          # Reusable UI components
+│   │   ├── microfrontend/   # Microfrontend components
+│   │   │   ├── LoginMicrofrontend.vue # Reusable login component
+│   │   │   ├── index.js     # Configuration utilities
+│   │   │   └── README.md    # Microfrontend documentation
+│   │   ├── ui/              # Shared UI components (shadcn-vue style)
+│   │   │   ├── Alert.vue    # Alert component
+│   │   │   ├── Button.vue   # Button component
+│   │   │   ├── Card.vue     # Card components
+│   │   │   ├── Input.vue    # Input component
+│   │   │   └── index.js     # UI components export
 │   │   ├── listLessons.vue  # Lesson list component
 │   │   ├── NavBar.vue       # Navigation bar
 │   │   ├── PopupNewVideo.vue # Video creation modal
 │   │   ├── PopupUploadVideo.vue # Video upload modal
 │   │   ├── SelectVideo.vue  # Video selection component
 │   │   └── SideBar.vue     # Sidebar navigation
+│   ├── examples/            # Usage examples
+│   │   └── LoginMicrofrontendExample.vue # Microfrontend examples
 │   ├── router/             # Routing configuration
 │   │   ├── auth.js         # Authentication guards
 │   │   ├── authenticationUser.js # User auth utilities
@@ -92,6 +104,14 @@ frontend/
 - **Progress indicators**: Real-time upload feedback
 - **Video preview**: Inline video player
 - **External API integration**: Panda Video support
+
+### 🧩 **Microfrontend Architecture**
+- **Reusable login component**: Configurable and themeable
+- **Multiple integration methods**: Direct import, NPM package, Module Federation
+- **Multi-tenant support**: Different configurations per client
+- **Event-driven communication**: Login success/error callbacks
+- **Customizable validation**: Email and password rules
+- **Theme system**: Default, minimal, and dark themes
 
 ### 🚀 **Performance & Optimization**
 - **Vue 3 Composition API**: Better performance
@@ -334,6 +354,83 @@ netlify deploy --prod --dir=dist
 - E2E tests for critical user journeys
 - Visual regression testing
 
+## 🧩 Microfrontend Usage
+
+### **Login Microfrontend Component**
+
+The project includes a fully reusable login microfrontend that can be integrated into other applications.
+
+#### **Basic Usage**
+```vue
+<template>
+  <LoginMicrofrontend
+    api-base-url="https://your-api.com"
+    title="Your Application"
+    @login-success="handleLogin"
+    @login-error="handleError"
+  />
+</template>
+
+<script setup>
+import LoginMicrofrontend from '@/components/microfrontend/LoginMicrofrontend.vue'
+
+const handleLogin = (authData) => {
+  console.log('User logged in:', authData)
+  // Handle successful login
+}
+
+const handleError = (errorData) => {
+  console.error('Login error:', errorData)
+  // Handle login error
+}
+</script>
+```
+
+#### **Advanced Configuration**
+```vue
+<template>
+  <LoginMicrofrontend v-bind="loginConfig" />
+</template>
+
+<script setup>
+import { createLoginConfig } from '@/components/microfrontend/index.js'
+
+const loginConfig = createLoginConfig({
+  theme: 'minimal',
+  apiConfig: {
+    apiBaseUrl: 'https://api.company.com',
+    authTokenKey: 'companyAuthToken'
+  },
+  texts: {
+    title: 'Corporate Portal',
+    subtitle: 'Employee Access Only'
+  },
+  features: {
+    showRememberMe: true,
+    showRegisterOption: false
+  },
+  validations: {
+    email: (email) => ({
+      isValid: email.endsWith('@company.com'),
+      message: 'Use your corporate email'
+    })
+  }
+})
+</script>
+```
+
+#### **Available Themes**
+- **default**: Modern gradient theme
+- **minimal**: Clean, simple design
+- **dark**: Dark mode theme
+
+#### **Integration Methods**
+1. **Direct Import**: Within the same Vue.js project
+2. **NPM Package**: Publish and install as a library
+3. **Module Federation**: Remote microfrontend consumption
+
+For complete documentation, see: `src/components/microfrontend/README.md`
+
 ## 🔮 Future Enhancements
 
 - [ ] **TypeScript migration**: Type-safe development
@@ -344,6 +441,7 @@ netlify deploy --prod --dir=dist
 - [ ] **Advanced caching**: Service worker implementation
 - [ ] **Component library**: Shared component system
 - [ ] **Design system**: Comprehensive style guide
+- [ ] **More microfrontends**: Dashboard, profile, settings components
 
 ## 🤝 Contributing
 
