@@ -21,8 +21,6 @@
   
 <script setup>
 import { router } from '@/router';
-import defineProps from 'vue'
-
 
 const props = defineProps(['title', 'navigation', 'logged'])
 

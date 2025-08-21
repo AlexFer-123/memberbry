@@ -58,6 +58,9 @@ module.exports = defineConfig({
     }
   },
   chainWebpack: config => {
+    // Desabilitar ESLint webpack plugin para evitar erro de 'extensions'
+    config.plugins.delete('eslint')
+    
     // Configuração específica do Babel para dependências node_modules
     config.module
       .rule('js')
@@ -100,7 +103,7 @@ module.exports = defineConfig({
   },
   // Configurações específicas para Vercel
   parallel: process.env.VERCEL ? false : require('os').cpus().length > 1,
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: false,
   
   // Configurações do dev server para Render.com
   devServer: {
